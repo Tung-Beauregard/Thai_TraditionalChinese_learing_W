@@ -498,12 +498,12 @@ async function scoreHandwriting(drawnCanvas, glyph, font) {
   if (userTotal < 60) return null;
 
   const targetSharp = renderGlyphCanvas(glyph, W, H, font, 0);
-  const targetDilated = renderGlyphCanvas(glyph, W, H, font, 9);
-  const userDilated = blurredCopy(drawnCanvas, 9);
+  const targetDilated = renderGlyphCanvas(glyph, W, H, font, 14);
+  const userDilated = blurredCopy(drawnCanvas, 14);
 
   const targetSharpMask = getAlphaMask(targetSharp, 40);
-  const targetDilatedMask = getAlphaMask(targetDilated, 20);
-  const userDilatedMask = getAlphaMask(userDilated, 20);
+  const targetDilatedMask = getAlphaMask(targetDilated, 12);
+  const userDilatedMask = getAlphaMask(userDilated, 12);
 
   let targetTotal = 0, coverHits = 0, precHits = 0;
   for (let i = 0; i < W * H; i++) {
@@ -567,7 +567,7 @@ function WritingTab({ known, onToggleKnown }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
     setChecking(true);
-    const result = await scoreHandwriting(canvas, ch.c, `700 220px 'Noto Serif TC', serif`);
+    const result = await scoreHandwriting(canvas, ch.c, `600 220px 'Noto Serif TC', serif`);
     setScore(result);
     setChecking(false);
   };
@@ -599,7 +599,8 @@ function WritingTab({ known, onToggleKnown }) {
     <div>
       <p style={thaiFont} className="text-amber-100/80 text-sm leading-relaxed mb-5 max-w-2xl">
         ตัวอักษรจีนเขียนตามลำดับขีด ยิ่งฝึกบ่อยยิ่งจำได้แม่น ตัวจางๆ ด้านหลังคือแบบให้ลากตาม
-        ลองใช้นิ้วหรือเมาส์เขียนตามดู เขียนเสร็จกด "ตรวจ" เพื่อดูคะแนน แล้วค่อยกดรูปดาวเพื่อบันทึก
+        เส้นแต่ละขีดมีความหนาอยู่แล้ว แค่ "เขียนทับ" กลางเส้นก็พอ ไม่ต้องลากเส้นขอบ
+        เขียนเสร็จกด "ตรวจ" เพื่อดูคะแนน แล้วค่อยกดรูปดาวเพื่อบันทึก
       </p>
 
       <div className="flex flex-wrap gap-2 mb-5">
@@ -618,7 +619,7 @@ function WritingTab({ known, onToggleKnown }) {
 
         <div className="relative w-full aspect-square bg-orange-50 rounded-xl border border-amber-800/20 shadow-md overflow-hidden touch-none">
           {showGuide && (
-            <div style={zhFont} className="absolute inset-0 flex items-center justify-center text-teal-950/15 text-[9rem] leading-none pointer-events-none select-none">{ch.c}</div>
+            <div style={{ ...zhFont, fontWeight: 600 }} className="absolute inset-0 flex items-center justify-center text-teal-950/15 text-[9rem] leading-none pointer-events-none select-none">{ch.c}</div>
           )}
           <canvas
             ref={canvasRef} width={320} height={320}

@@ -545,12 +545,12 @@ async function scoreHandwriting(drawnCanvas, glyph, font) {
   if (userTotal < 60) return null; // 幾乎沒畫東西
 
   const targetSharp = renderGlyphCanvas(glyph, W, H, font, 0);
-  const targetDilated = renderGlyphCanvas(glyph, W, H, font, 9);
-  const userDilated = blurredCopy(drawnCanvas, 9);
+  const targetDilated = renderGlyphCanvas(glyph, W, H, font, 14);
+  const userDilated = blurredCopy(drawnCanvas, 14);
 
   const targetSharpMask = getAlphaMask(targetSharp, 40);
-  const targetDilatedMask = getAlphaMask(targetDilated, 20);
-  const userDilatedMask = getAlphaMask(userDilated, 20);
+  const targetDilatedMask = getAlphaMask(targetDilated, 12);
+  const userDilatedMask = getAlphaMask(userDilated, 12);
 
   let targetTotal = 0, coverHits = 0, precHits = 0;
   for (let i = 0; i < W * H; i++) {
@@ -616,7 +616,7 @@ function LetterWritingTab({ known, onToggleKnown }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
     setChecking(true);
-    const result = await scoreHandwriting(canvas, letter.l, `700 220px 'Sarabun', sans-serif`);
+    const result = await scoreHandwriting(canvas, letter.l, `600 220px 'Sarabun', sans-serif`);
     setScore(result);
     setChecking(false);
   };
@@ -657,7 +657,8 @@ function LetterWritingTab({ known, onToggleKnown }) {
     <div>
       <p className="text-amber-100/80 text-sm leading-relaxed mb-5 max-w-2xl">
         泰文子音共有 44 個，傳統上會搭配一個「助憶詞」來記，就像中文的「ㄅ 爸爸」。
-        淡淡的字形是描摹參考，直接在上面用手指或滑鼠寫寫看，寫完點「檢查」看看準不準，練熟了再點星星標記。
+        淡淡的字形是描摹參考，筆畫線條本身有一定粗細，直接「寫過」線條中間就好，不用刻意描外框；
+        寫完點「檢查」看看準不準，練熟了再點星星標記。
       </p>
 
       <div className="flex flex-wrap gap-2 mb-5">
@@ -686,7 +687,7 @@ function LetterWritingTab({ known, onToggleKnown }) {
         <div className="relative w-full aspect-square bg-orange-50 rounded-xl border border-amber-800/20 shadow-md overflow-hidden touch-none">
           {showGuide && (
             <div
-              style={thaiFont}
+              style={{ ...thaiFont, fontWeight: 600 }}
               className="absolute inset-0 flex items-center justify-center text-teal-950/15 text-[9rem] leading-none pointer-events-none select-none"
             >
               {letter.l}
