@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Learn Thai in Chinese ・ Learn Chinese in Thai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: #042f2e; color: #fff7ed;
+    font-family: 'Sarabun', sans-serif;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .wrap { max-width: 720px; width: 100%; }
+  h1 {
+    font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 2rem;
+    text-align: center; margin: 0 0 8px;
+  }
+  p.sub { text-align: center; color: rgba(255,247,237,0.6); margin: 0 0 40px; font-size: 0.95rem; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+  a.card {
+    display: block; text-decoration: none; color: inherit;
+    background: #fff7ed; color: #042f2e; border-radius: 16px; padding: 28px 22px;
+    border: 1px solid rgba(180,83,9,0.15); transition: transform .15s, box-shadow .15s;
+  }
+  a.card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.35); }
+  .card .glyph { font-family: 'Noto Serif TC', serif; font-size: 2.6rem; font-weight: 900; line-height: 1; margin-bottom: 12px; }
+  .card h2 { font-size: 1.15rem; margin: 0 0 6px; font-weight: 700; }
+  .card p { margin: 0; font-size: 0.85rem; opacity: 0.65; line-height: 1.5; }
+  footer { text-align: center; margin-top: 40px; font-size: 0.75rem; color: rgba(255,247,237,0.3); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>สวัสดี 你好</h1>
+    <p class="sub">สองแอปสำหรับฝึกภาษา ・ 兩個語言學習小工具</p>
+    <div class="cards">
+      <a class="card" href="./Learning_Thai_in_Chinese.html">
+        <div class="glyph">ก</div>
+        <h2>Learning Thai in Chinese</h2>
+        <p>用中文學泰語：課程闖關・字母手寫（含評分）・打字入門・旅遊短語・聊天用語・測驗練習</p>
+      </a>
+      <a class="card" href="./Learning_Traditional_Chinese_in_Thai.html">
+        <div class="glyph">你</div>
+        <h2>Learning Traditional Chinese in Thai</h2>
+        <p>ใช้ภาษาไทยเรียนจีน：ด่านบทเรียน・ฝึกเขียน（พร้อมให้คะแนน）・พิมพ์จีน (พินอิน/注音)・ท่องเที่ยว・แชท</p>
+      </a>
+    </div>
+    <footer>Single-file HTML apps · React + Tailwind via CDN, no build step required</footer>
+  </div>
+</body>
+</html>

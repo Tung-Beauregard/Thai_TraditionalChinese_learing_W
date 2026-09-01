@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Learning Traditional Chinese in Thai ｜ ด่านบทเรียน・ฝึกเขียน・พิมพ์จีน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Sarabun:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #042f2e; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/plain" id="app-source">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+const IconBase = ({ children, size = 16, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    {children}
+  </svg>
+);
+
+const Keyboard = (p) => (
+  <IconBase {...p}>
+    <rect x="2" y="6" width="20" height="12" rx="2" />
+    <line x1="6" y1="10" x2="6.01" y2="10" /><line x1="10" y1="10" x2="10.01" y2="10" />
+    <line x1="14" y1="10" x2="14.01" y2="10" /><line x1="18" y1="10" x2="18.01" y2="10" />
+    <line x1="6" y1="14" x2="6.01" y2="14" /><line x1="18" y1="14" x2="18.01" y2="14" />
+    <line x1="10" y1="14" x2="14" y2="14" />
+  </IconBase>
+);
+const Plane = (p) => (
+  <IconBase {...p}><path d="M22 2L11 13" /><path d="M22 2l-7 20-4-9-9-4 20-7z" /></IconBase>
+);
+const MessageCircle = (p) => (
+  <IconBase {...p}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></IconBase>
+);
+const GraduationCap = (p) => (
+  <IconBase {...p}><path d="M22 10L12 5 2 10l10 5 10-5z" /><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5" /></IconBase>
+);
+const Volume2 = (p) => (
+  <IconBase {...p}>
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+  </IconBase>
+);
+const RotateCcw = (p) => (
+  <IconBase {...p}><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8" /><polyline points="3 3 3 8 8 8" /></IconBase>
+);
+const Star = ({ fill = "none", ...p }) => (
+  <IconBase fill={fill} {...p}>
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </IconBase>
+);
+const Check = (p) => (<IconBase {...p}><polyline points="20 6 9 17 4 12" /></IconBase>);
+const X = (p) => (<IconBase {...p}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></IconBase>);
+const Shuffle = (p) => (
+  <IconBase {...p}>
+    <polyline points="16 3 21 3 21 8" /><line x1="4" y1="20" x2="21" y2="3" />
+    <polyline points="21 16 21 21 16 21" /><line x1="15" y1="15" x2="21" y2="21" />
+    <line x1="4" y1="4" x2="9" y2="9" />
+  </IconBase>
+);
+const ArrowRight = (p) => (<IconBase {...p}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></IconBase>);
+const ArrowLeft = (p) => (<IconBase {...p}><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></IconBase>);
+const Delete = (p) => (
+  <IconBase {...p}>
+    <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z" />
+    <line x1="18" y1="9" x2="12" y2="15" /><line x1="12" y1="9" x2="18" y2="15" />
+  </IconBase>
+);
+const PenLine = (p) => (
+  <IconBase {...p}><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></IconBase>
+);
+const Eye = (p) => (
+  <IconBase {...p}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></IconBase>
+);
+const EyeOff = (p) => (
+  <IconBase {...p}>
+    <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.5 18.5 0 0 1 5.06-5.94" />
+    <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+    <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+    <line x1="1" y1="1" x2="23" y2="23" />
+  </IconBase>
+);
+const Eraser = (p) => (
+  <IconBase {...p}>
+    <path d="M20 20H7L3 16c-.94-.94-.94-2.06 0-3l10-10c.94-.94 2.06-.94 3 0l6 6c.94.94.94 2.06 0 3l-9 9" />
+    <path d="M6 12l7 7" />
+  </IconBase>
+);
+const Heart = ({ fill = "none", ...p }) => (
+  <IconBase fill={fill} {...p}>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </IconBase>
+);
+const Flame = (p) => (
+  <IconBase {...p}>
+    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+  </IconBase>
+);
+const Lock = (p) => (
+  <IconBase {...p}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></IconBase>
+);
+const Zap = (p) => (
+  <IconBase {...p}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></IconBase>
+);
+const Trophy = (p) => (
+  <IconBase {...p}>
+    <path d="M8 21h8" /><path d="M12 17v4" /><path d="M7 4h10v5a5 5 0 0 1-10 0V4z" />
+    <path d="M17 5h3a2 2 0 0 1 0 4h-1" /><path d="M7 5H4a2 2 0 0 0 0 4h1" />
+  </IconBase>
+);
+
+function storageGet(key) {
+  const raw = localStorage.getItem(key);
+  if (raw === null) throw new Error("not found: " + key);
+  return { key, value: raw };
+}
+function storageSet(key, value) {
+  try { localStorage.setItem(key, value); } catch (e) { /* private browsing etc */ }
+  return { key, value };
+}
+
+
+/* ---------------------------------------------------------- */
+/* 字型                                                        */
+/* ---------------------------------------------------------- */
+
+const FONT_IMPORT = `@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Sarabun:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');`;
+const zhFont = { fontFamily: "'Noto Serif TC', serif" };
+const thaiFont = { fontFamily: "'Sarabun', sans-serif" };
+const monoFont = { fontFamily: "'IBM Plex Mono', monospace" };
+
+/* ---------------------------------------------------------- */
+/* 資料：24 個基礎漢字（依筆畫分組）                              */
+/* ---------------------------------------------------------- */
+
+const GROUP_LABEL = { easy: "ง่าย", medium: "กลาง", hard: "ยาก" };
+const GROUP_COLOR = {
+  easy: "bg-amber-400 text-teal-950",
+  medium: "bg-rose-600 text-white",
+  hard: "bg-emerald-600 text-white",
+};
+
+const CHARACTERS = [
+  { c: "一", py: "yī", zy: "ㄧ", strokes: 1, group: "easy", th: "หนึ่ง" },
+  { c: "二", py: "èr", zy: "ㄦˋ", strokes: 2, group: "easy", th: "สอง" },
+  { c: "三", py: "sān", zy: "ㄙㄢ", strokes: 3, group: "easy", th: "สาม" },
+  { c: "人", py: "rén", zy: "ㄖㄣˊ", strokes: 2, group: "easy", th: "คน" },
+  { c: "大", py: "dà", zy: "ㄉㄚˋ", strokes: 3, group: "easy", th: "ใหญ่" },
+  { c: "小", py: "xiǎo", zy: "ㄒㄧㄠˇ", strokes: 3, group: "easy", th: "เล็ก" },
+  { c: "不", py: "bù", zy: "ㄅㄨˋ", strokes: 4, group: "easy", th: "ไม่" },
+  { c: "水", py: "shuǐ", zy: "ㄕㄨㄟˇ", strokes: 4, group: "easy", th: "น้ำ" },
+  { c: "火", py: "huǒ", zy: "ㄏㄨㄛˇ", strokes: 4, group: "easy", th: "ไฟ" },
+  { c: "山", py: "shān", zy: "ㄕㄢ", strokes: 3, group: "easy", th: "ภูเขา" },
+  { c: "天", py: "tiān", zy: "ㄊㄧㄢ", strokes: 4, group: "easy", th: "ฟ้า / วัน" },
+  { c: "少", py: "shǎo", zy: "ㄕㄠˇ", strokes: 4, group: "easy", th: "น้อย" },
+  { c: "他", py: "tā", zy: "ㄊㄚ", strokes: 5, group: "medium", th: "เขา" },
+  { c: "好", py: "hǎo", zy: "ㄏㄠˇ", strokes: 6, group: "medium", th: "ดี" },
+  { c: "吃", py: "chī", zy: "ㄔ", strokes: 6, group: "medium", th: "กิน" },
+  { c: "多", py: "duō", zy: "ㄉㄨㄛ", strokes: 6, group: "medium", th: "มาก / เยอะ" },
+  { c: "在", py: "zài", zy: "ㄗㄞˋ", strokes: 6, group: "medium", th: "อยู่ที่" },
+  { c: "你", py: "nǐ", zy: "ㄋㄧˇ", strokes: 7, group: "medium", th: "คุณ" },
+  { c: "我", py: "wǒ", zy: "ㄨㄛˇ", strokes: 7, group: "medium", th: "ฉัน" },
+  { c: "是", py: "shì", zy: "ㄕˋ", strokes: 9, group: "medium", th: "คือ / ใช่" },
+  { c: "哪", py: "nǎ", zy: "ㄋㄚˇ", strokes: 9, group: "medium", th: "ไหน" },
+  { c: "喝", py: "hē", zy: "ㄏㄜ", strokes: 12, group: "hard", th: "ดื่ม" },
+  { c: "錢", py: "qián", zy: "ㄑㄧㄢˊ", strokes: 16, group: "hard", th: "เงิน" },
+  { c: "謝", py: "xiè", zy: "ㄒㄧㄝˋ", strokes: 17, group: "hard", th: "ขอบคุณ" },
+];
+
+/* ---------------------------------------------------------- */
+/* 資料：拼音／注音鍵盤                                          */
+/* ---------------------------------------------------------- */
+
+const PINYIN_ROWS = [
+  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+  ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+  ["Z", "X", "C", "V", "B", "N", "M"],
+];
+const TONE_KEYS = ["1", "2", "3", "4"];
+
+// 大千式（標準式）注音鍵盤配置
+const ZHUYIN_ROWS = [
+  [["1", "ㄅ"], ["2", "ㄉ"], ["3", "ˇ"], ["4", "ˋ"], ["5", "ㄓ"], ["6", "ˊ"], ["7", "˙"], ["8", "ㄚ"], ["9", "ㄞ"], ["0", "ㄢ"], ["-", "ㄦ"]],
+  [["Q", "ㄆ"], ["W", "ㄊ"], ["E", "ㄍ"], ["R", "ㄐ"], ["T", "ㄔ"], ["Y", "ㄗ"], ["U", "ㄧ"], ["I", "ㄛ"], ["O", "ㄟ"], ["P", "ㄣ"]],
+  [["A", "ㄇ"], ["S", "ㄋ"], ["D", "ㄎ"], ["F", "ㄑ"], ["G", "ㄕ"], ["H", "ㄘ"], ["J", "ㄨ"], ["K", "ㄜ"], ["L", "ㄠ"], [";", "ㄤ"]],
+  [["Z", "ㄈ"], ["X", "ㄌ"], ["C", "ㄏ"], ["V", "ㄒ"], ["B", "ㄖ"], ["N", "ㄙ"], ["M", "ㄩ"], [",", "ㄝ"], [".", "ㄡ"], ["/", "ㄥ"]],
+];
+
+const TARGET_WORDS = [
+  { zh: "你好", py: "ni3 hao3", zy: "ㄋㄧˇ ㄏㄠˇ", th: "สวัสดี" },
+  { zh: "謝謝", py: "xie4 xie", zy: "ㄒㄧㄝˋ ㄒㄧㄝ", th: "ขอบคุณ" },
+  { zh: "多少錢", py: "duo1 shao3 qian2", zy: "ㄉㄨㄛ ㄕㄠˇ ㄑㄧㄢˊ", th: "เท่าไหร่" },
+  { zh: "不客氣", py: "bu2 ke4 qi", zy: "ㄅㄨˊ ㄎㄜˋ ㄑㄧ", th: "ไม่เป็นไร" },
+  { zh: "再見", py: "zai4 jian4", zy: "ㄗㄞˋ ㄐㄧㄢˋ", th: "ลาก่อน" },
+];
+
+/* ---------------------------------------------------------- */
+/* 資料：短語                                                  */
+/* ---------------------------------------------------------- */
+
+const TRAVEL = [
+  { id: "t1", zh: "你好", py: "nǐ hǎo", th: "สวัสดี" },
+  { id: "t2", zh: "謝謝", py: "xièxie", th: "ขอบคุณ" },
+  { id: "t3", zh: "對不起", py: "duìbùqǐ", th: "ขอโทษ" },
+  { id: "t4", zh: "多少錢？", py: "duōshǎo qián?", th: "เท่าไหร่?" },
+  { id: "t5", zh: "太貴了，可以便宜一點嗎？", py: "tài guì le, piányí yìdiǎn ma?", th: "แพงไป ลดหน่อยได้ไหม" },
+  { id: "t6", zh: "廁所在哪裡？", py: "cèsuǒ zài nǎlǐ?", th: "ห้องน้ำอยู่ไหน" },
+  { id: "t7", zh: "買單", py: "mǎidān", th: "ขอเช็คบิล" },
+  { id: "t8", zh: "不要辣", py: "búyào là", th: "ไม่เผ็ด" },
+  { id: "t9", zh: "很好吃", py: "hěn hǎochī", th: "อร่อยมาก" },
+  { id: "t10", zh: "我吃素", py: "wǒ chī sù", th: "ฉันกินเจ" },
+  { id: "t11", zh: "請給我一杯水", py: "qǐng gěi wǒ yìbēi shuǐ", th: "ขอน้ำเปล่าหนึ่งแก้ว" },
+  { id: "t12", zh: "救命", py: "jiùmìng", th: "ช่วยด้วย" },
+  { id: "t13", zh: "你會說英文嗎？", py: "nǐ huì shuō yīngwén ma?", th: "พูดภาษาอังกฤษได้ไหม" },
+  { id: "t14", zh: "怎麼走？", py: "zěnme zǒu?", th: "ไปทางไหน" },
+  { id: "t15", zh: "左轉、右轉、直走", py: "zuǒzhuǎn, yòuzhuǎn, zhízǒu", th: "เลี้ยวซ้าย เลี้ยวขวา ตรงไป" },
+  { id: "t16", zh: "機場在哪裡？", py: "jīchǎng zài nǎlǐ?", th: "สนามบินอยู่ที่ไหน" },
+  { id: "t17", zh: "可以刷卡嗎？", py: "kěyǐ shuākǎ ma?", th: "รับบัตรเครดิตไหม" },
+  { id: "t18", zh: "我不懂", py: "wǒ bù dǒng", th: "ไม่เข้าใจ" },
+  { id: "t19", zh: "內用還是外帶？", py: "nèiyòng háishì wàidài?", th: "ทานที่นี่หรือห่อกลับ" },
+  { id: "t20", zh: "內用", py: "nèiyòng", th: "ทานที่นี่" },
+  { id: "t21", zh: "請幫我外帶", py: "qǐng bāng wǒ wàidài", th: "ขอห่อกลับด้วย" },
+  { id: "t22", zh: "我要付現金", py: "wǒ yào fù xiànjīn", th: "ขอจ่ายเงินสด" },
+  { id: "t23", zh: "可以找零嗎？", py: "kěyǐ zhǎolíng ma?", th: "มีเงินทอนไหม" },
+  { id: "t24", zh: "請給我收據", py: "qǐng gěi wǒ shōujù", th: "ขอใบเสร็จด้วย" },
+];
+
+const CHAT = [
+  { id: "c1", zh: "你好嗎？", py: "nǐ hǎo ma?", th: "สบายดีไหม" },
+  { id: "c2", zh: "我很好", py: "wǒ hěn hǎo", th: "สบายดี" },
+  { id: "c3", zh: "你叫什麼名字？", py: "nǐ jiào shénme míngzì?", th: "คุณชื่ออะไร" },
+  { id: "c4", zh: "很高興認識你", py: "hěn gāoxìng rènshi nǐ", th: "ยินดีที่ได้รู้จัก" },
+  { id: "c5", zh: "你從哪裡來？", py: "nǐ cóng nǎlǐ lái?", th: "คุณมาจากไหน" },
+  { id: "c6", zh: "你幾歲？", py: "nǐ jǐ suì?", th: "อายุเท่าไหร่" },
+  { id: "c7", zh: "你喜歡……嗎？", py: "nǐ xǐhuān…ma?", th: "ชอบ…ไหม" },
+  { id: "c8", zh: "我喜歡……", py: "wǒ xǐhuān…", th: "ฉันชอบ…" },
+  { id: "c9", zh: "你有空嗎？", py: "nǐ yǒukòng ma?", th: "ว่างไหม" },
+  { id: "c10", zh: "一起去吃飯好嗎？", py: "yìqǐ qù chīfàn hǎo ma?", th: "ไปกินข้าวกันไหม" },
+  { id: "c11", zh: "你有 Line 嗎？", py: "nǐ yǒu Line ma?", th: "มีไลน์ไหม" },
+  { id: "c12", zh: "我想你", py: "wǒ xiǎng nǐ", th: "คิดถึงนะ" },
+  { id: "c13", zh: "晚安", py: "wǎn'ān", th: "ฝันดี" },
+  { id: "c14", zh: "再見", py: "zàijiàn", th: "แล้วเจอกัน" },
+  { id: "c15", zh: "你在做什麼？", py: "nǐ zài zuò shénme?", th: "ทำอะไรอยู่" },
+  { id: "c16", zh: "真的假的？", py: "zhēnde jiǎde?", th: "จริงเหรอ" },
+  { id: "c17", zh: "太酷了", py: "tài kù le", th: "เจ๋งมาก" },
+  { id: "c18", zh: "好累", py: "hǎo lèi", th: "เหนื่อยจัง" },
+];
+
+const ALL_PHRASES = [...TRAVEL, ...CHAT];
+
+/* ---------------------------------------------------------- */
+/* 小工具                                                      */
+/* ---------------------------------------------------------- */
+
+function speak(text) {
+  try {
+    if (typeof window === "undefined" || !window.speechSynthesis) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "zh-TW";
+    u.rate = 0.9;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ---------------------------------------------------------- */
+/* 字卡（旅遊／聊天短語）                                        */
+/* ---------------------------------------------------------- */
+
+function TagCard({ item, known, onToggleKnown }) {
+  return (
+    <div className="relative bg-orange-50 border border-amber-800/20 rounded-md shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4">
+      <div className="absolute -top-1.5 left-4 w-3 h-3 rounded-full bg-teal-950 border-2 border-amber-300" />
+      <div className="flex items-start justify-between gap-2">
+        <p style={zhFont} className="text-xl font-semibold text-teal-950 leading-snug">{item.zh}</p>
+        <div className="flex items-center gap-1 shrink-0">
+          <button onClick={() => speak(item.zh)} aria-label="เล่นเสียง" className="p-1.5 rounded-full bg-teal-950 text-amber-300 hover:bg-teal-900 active:scale-95 transition">
+            <Volume2 size={14} />
+          </button>
+          <button
+            onClick={() => onToggleKnown(item.id)}
+            aria-label="จำได้แล้ว"
+            className={`p-1.5 rounded-full border transition active:scale-95 ${known ? "bg-amber-400 border-amber-500 text-teal-950" : "bg-transparent border-teal-950/20 text-teal-950/30"}`}
+          >
+            <Star size={14} fill={known ? "currentColor" : "none"} />
+          </button>
+        </div>
+      </div>
+      <p style={monoFont} className="text-xs text-emerald-800 mt-1.5 tracking-tight">{item.py}</p>
+      <p style={thaiFont} className="text-sm text-teal-950/70 mt-1">{item.th}</p>
+    </div>
+  );
+}
+
+function PhraseGrid({ list, known, onToggleKnown, note }) {
+  return (
+    <div>
+      {note && <p style={thaiFont} className="text-xs text-amber-200/70 mb-4">{note}</p>}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {list.map((item) => <TagCard key={item.id} item={item} known={known.has(item.id)} onToggleKnown={onToggleKnown} />)}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------- */
+/* 寫字練習                                                     */
+/* ---------------------------------------------------------- */
+
+/* ---------------------------------------------------------- */
+/* ให้คะแนนลายมือ: เทียบพิกเซลบน canvas ใช้งานได้แบบออฟไลน์ ไม่ต้องพึ่ง API ภายนอก */
+/* ---------------------------------------------------------- */
+
+function getAlphaMask(sourceCanvas, threshold) {
+  const { width: W, height: H } = sourceCanvas;
+  const data = sourceCanvas.getContext("2d").getImageData(0, 0, W, H).data;
+  const mask = new Uint8Array(W * H);
+  for (let i = 0; i < W * H; i++) mask[i] = data[i * 4 + 3] > threshold ? 1 : 0;
+  return mask;
+}
+
+function renderGlyphCanvas(ch, W, H, font, blurPx) {
+  const c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#000";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = font;
+  if (blurPx) ctx.filter = `blur(${blurPx}px)`;
+  ctx.fillText(ch, W / 2, H / 2 + H * 0.03);
+  return c;
+}
+
+function blurredCopy(sourceCanvas, blurPx) {
+  const { width: W, height: H } = sourceCanvas;
+  const c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  ctx.filter = `blur(${blurPx}px)`;
+  ctx.drawImage(sourceCanvas, 0, 0);
+  return c;
+}
+
+async function scoreHandwriting(drawnCanvas, glyph, font) {
+  try { await document.fonts.load(font); } catch (e) {}
+  const W = drawnCanvas.width, H = drawnCanvas.height;
+
+  const userSharpMask = getAlphaMask(drawnCanvas, 40);
+  let userTotal = 0;
+  for (let i = 0; i < userSharpMask.length; i++) if (userSharpMask[i]) userTotal++;
+  if (userTotal < 60) return null;
+
+  const targetSharp = renderGlyphCanvas(glyph, W, H, font, 0);
+  const targetDilated = renderGlyphCanvas(glyph, W, H, font, 9);
+  const userDilated = blurredCopy(drawnCanvas, 9);
+
+  const targetSharpMask = getAlphaMask(targetSharp, 40);
+  const targetDilatedMask = getAlphaMask(targetDilated, 20);
+  const userDilatedMask = getAlphaMask(userDilated, 20);
+
+  let targetTotal = 0, coverHits = 0, precHits = 0;
+  for (let i = 0; i < W * H; i++) {
+    if (targetSharpMask[i]) { targetTotal++; if (userDilatedMask[i]) coverHits++; }
+    if (userSharpMask[i] && targetDilatedMask[i]) precHits++;
+  }
+  const coverage = targetTotal ? coverHits / targetTotal : 0;
+  const precision = userTotal ? precHits / userTotal : 0;
+  const f1 = coverage + precision > 0 ? (2 * coverage * precision) / (coverage + precision) : 0;
+  return { pct: Math.round(f1 * 100), coverage: Math.round(coverage * 100), precision: Math.round(precision * 100) };
+}
+
+function scoreTier(pct) {
+  if (pct >= 75) return { stars: 3, label: "เยี่ยมมาก! ตรงเป๊ะ", color: "text-emerald-600" };
+  if (pct >= 50) return { stars: 2, label: "ดีนะ ฝึกอีกหน่อยจะแม่นขึ้น", color: "text-amber-600" };
+  if (pct >= 25) return { stars: 1, label: "เขียนมาแล้ว แต่ยังเพี้ยนอยู่", color: "text-orange-600" };
+  return { stars: 0, label: "ยังไม่ตรงเลย ลองใหม่อีกครั้ง", color: "text-rose-600" };
+}
+
+function ScoreResult({ result, checking }) {
+  if (checking) return <p style={thaiFont} className="text-xs text-amber-100/50 mt-3 text-center">กำลังให้คะแนน…</p>;
+  if (result === undefined) return null;
+  if (result === null) return <p style={thaiFont} className="text-xs text-amber-100/50 mt-3 text-center">เขียนบนกระดานก่อน แล้วค่อยกดตรวจ</p>;
+  const tier = scoreTier(result.pct);
+  return (
+    <div className="mt-3 bg-orange-50 rounded-lg border border-amber-800/20 px-4 py-3 text-center">
+      <div className="flex items-center justify-center gap-1 mb-1">
+        {[0, 1, 2].map((i) => (
+          <Star key={i} size={18} className={i < tier.stars ? "text-amber-500" : "text-teal-950/15"} fill={i < tier.stars ? "currentColor" : "none"} />
+        ))}
+      </div>
+      <p className={`text-sm font-semibold ${tier.color}`} style={thaiFont}>{result.pct} คะแนน · {tier.label}</p>
+      <p style={thaiFont} className="text-[11px] text-teal-950/40 mt-0.5">ครอบคลุม {result.coverage}% · แม่นยำ {result.precision}%</p>
+    </div>
+  );
+}
+
+function WritingTab({ known, onToggleKnown }) {
+  const [filter, setFilter] = useState("all");
+  const [idx, setIdx] = useState(0);
+  const [showGuide, setShowGuide] = useState(true);
+  const [score, setScore] = useState(undefined);
+  const [checking, setChecking] = useState(false);
+  const canvasRef = useRef(null);
+  const drawingRef = useRef(false);
+
+  const pool = CHARACTERS.filter((c) => filter === "all" || c.group === filter);
+  const ch = pool[idx % pool.length];
+
+  useEffect(() => setIdx(0), [filter]);
+
+  const clearCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    setScore(undefined);
+  }, []);
+  useEffect(() => { clearCanvas(); }, [ch?.c, clearCanvas]);
+
+  const checkScore = async () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    setChecking(true);
+    const result = await scoreHandwriting(canvas, ch.c, `700 220px 'Noto Serif TC', serif`);
+    setScore(result);
+    setChecking(false);
+  };
+
+  const getPos = (e, canvas) => {
+    const rect = canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  };
+  const startDraw = (e) => {
+    const canvas = canvasRef.current;
+    canvas.setPointerCapture(e.pointerId);
+    const ctx = canvas.getContext("2d");
+    const { x, y } = getPos(e, canvas);
+    ctx.beginPath(); ctx.moveTo(x, y);
+    ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = 7; ctx.strokeStyle = "#134e4a";
+    drawingRef.current = true;
+  };
+  const moveDraw = (e) => {
+    if (!drawingRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const { x, y } = getPos(e, canvas);
+    ctx.lineTo(x, y); ctx.stroke();
+  };
+  const endDraw = () => { drawingRef.current = false; };
+  const go = (dir) => setIdx((i) => (i + dir + pool.length) % pool.length);
+
+  return (
+    <div>
+      <p style={thaiFont} className="text-amber-100/80 text-sm leading-relaxed mb-5 max-w-2xl">
+        ตัวอักษรจีนเขียนตามลำดับขีด ยิ่งฝึกบ่อยยิ่งจำได้แม่น ตัวจางๆ ด้านหลังคือแบบให้ลากตาม
+        ลองใช้นิ้วหรือเมาส์เขียนตามดู เขียนเสร็จกด "ตรวจ" เพื่อดูคะแนน แล้วค่อยกดรูปดาวเพื่อบันทึก
+      </p>
+
+      <div className="flex flex-wrap gap-2 mb-5">
+        {[["all", "ทั้งหมด 24"], ["easy", "ง่าย 12"], ["medium", "กลาง 9"], ["hard", "ยาก 3"]].map(([v, label]) => (
+          <button key={v} onClick={() => setFilter(v)} className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition ${filter === v ? "bg-amber-400 text-teal-950" : "bg-teal-900 text-amber-200/70"}`}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="max-w-sm mx-auto">
+        <div className="flex items-center justify-between mb-2">
+          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded ${GROUP_COLOR[ch.group]}`}>{GROUP_LABEL[ch.group]} · {ch.strokes} ขีด</span>
+          <span className="text-xs text-amber-100/50">{(idx % pool.length) + 1} / {pool.length}</span>
+        </div>
+
+        <div className="relative w-full aspect-square bg-orange-50 rounded-xl border border-amber-800/20 shadow-md overflow-hidden touch-none">
+          {showGuide && (
+            <div style={zhFont} className="absolute inset-0 flex items-center justify-center text-teal-950/15 text-[9rem] leading-none pointer-events-none select-none">{ch.c}</div>
+          )}
+          <canvas
+            ref={canvasRef} width={320} height={320}
+            className="absolute inset-0 w-full h-full touch-none cursor-crosshair"
+            onPointerDown={startDraw} onPointerMove={moveDraw} onPointerUp={endDraw} onPointerLeave={endDraw}
+          />
+          <button onClick={() => onToggleKnown(ch.c)} className={`absolute top-3 right-3 p-1.5 rounded-full ${known.has(ch.c) ? "text-amber-500" : "text-teal-950/20"}`}>
+            <Star size={18} fill={known.has(ch.c) ? "currentColor" : "none"} />
+          </button>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
+          <button onClick={clearCanvas} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-teal-900 text-amber-200"><Eraser size={12} /> ลบ</button>
+          <button onClick={() => setShowGuide((s) => !s)} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-teal-900 text-amber-200">
+            {showGuide ? <EyeOff size={12} /> : <Eye size={12} />} {showGuide ? "ซ่อนตัวอักษร" : "แสดงตัวอักษร"}
+          </button>
+          <button onClick={() => speak(ch.c)} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-teal-950 text-amber-300"><Volume2 size={12} /> ออกเสียง</button>
+          <button onClick={checkScore} disabled={checking} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-amber-400 text-teal-950 font-semibold disabled:opacity-50"><Check size={12} /> ตรวจ</button>
+        </div>
+
+        <ScoreResult result={score} checking={checking} />
+
+        <div className="mt-4 text-center">
+          <p className="text-sm text-amber-100/60">
+            <span style={zhFont} className="text-lg text-orange-50">{ch.c}</span>
+            <span style={monoFont} className="mx-1.5">{ch.py}</span>
+            <span style={monoFont} className="text-amber-200/60">{ch.zy}</span>
+          </p>
+          <p style={thaiFont} className="text-xs text-amber-100/40 mt-1">แปลว่า {ch.th}</p>
+        </div>
+
+        <div className="flex items-center justify-between mt-5">
+          <button onClick={() => go(-1)} className="flex items-center gap-1 px-4 py-2 rounded-md bg-teal-900 text-amber-200 text-sm active:scale-95 transition"><ArrowLeft size={14} /> ก่อนหน้า</button>
+          <button onClick={() => go(1)} className="flex items-center gap-1 px-4 py-2 rounded-md bg-teal-900 text-amber-200 text-sm active:scale-95 transition">ถัดไป <ArrowRight size={14} /></button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------- */
+/* 打字入門：拼音／注音                                          */
+/* ---------------------------------------------------------- */
+
+function TypingTab() {
+  const [mode, setMode] = useState("pinyin"); // 'pinyin' | 'zhuyin'
+  const [pressed, setPressed] = useState(null);
+  const [text, setText] = useState("");
+  const [targetIdx, setTargetIdx] = useState(0);
+  const target = TARGET_WORDS[targetIdx];
+  const targetStr = mode === "pinyin" ? target.py : target.zy;
+  const matched = text.trim() === targetStr;
+
+  useEffect(() => setText(""), [mode]);
+
+  const pressKey = (label) => {
+    setText((t) => (mode === "pinyin" ? t + label.toLowerCase() : t + label));
+    setPressed(label);
+    setTimeout(() => setPressed(null), 150);
+  };
+
+  return (
+    <div>
+      <p style={thaiFont} className="text-amber-100/80 text-sm leading-relaxed mb-5 max-w-2xl">
+        ภาษาจีนพิมพ์ด้วยระบบถอดเสียง 2 แบบหลัก: <strong>พินอิน</strong>（ใช้ตัวอักษรละติน + ตัวเลขบอกวรรณยุกต์）
+        กับ <strong>จู้อิน／注音</strong>（สัญลักษณ์เฉพาะที่ใช้กันทั่วไปในไต้หวัน）เลือกฝึกได้ทั้งสองแบบ
+      </p>
+
+      <div className="flex items-center gap-2 mb-4">
+        {[["pinyin", "พินอิน (Pinyin)"], ["zhuyin", "จู้อิน (Zhuyin)"]].map(([v, label]) => (
+          <button key={v} onClick={() => setMode(v)} className={`px-4 py-2 rounded-md text-sm font-semibold border transition active:scale-95 ${mode === v ? "bg-amber-400 text-teal-950 border-amber-300" : "bg-teal-900 text-amber-200 border-amber-100/20"}`}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {mode === "pinyin" ? (
+        <div className="bg-teal-900/60 border border-amber-100/10 rounded-lg p-3 sm:p-4 space-y-1.5">
+          {PINYIN_ROWS.map((row, ri) => (
+            <div key={ri} className="flex gap-1.5 overflow-x-auto pb-1 justify-center">
+              {row.map((k) => (
+                <button key={k} onClick={() => pressKey(k)} className={`shrink-0 w-10 h-12 sm:w-11 sm:h-14 rounded-md flex items-center justify-center border transition-all duration-150 ${pressed === k ? "bg-amber-300 border-amber-200 scale-95 shadow-[0_0_12px_rgba(251,191,36,0.7)] text-teal-950" : "bg-teal-950 border-amber-100/15 hover:bg-teal-800 text-amber-200"}`}>
+                  <span className="text-base font-semibold">{k}</span>
+                </button>
+              ))}
+            </div>
+          ))}
+          <div className="flex gap-1.5 justify-center pt-1">
+            {TONE_KEYS.map((k) => (
+              <button key={k} onClick={() => pressKey(k)} className={`shrink-0 w-10 h-12 rounded-md flex flex-col items-center justify-center border transition-all duration-150 ${pressed === k ? "bg-amber-300 border-amber-200 scale-95 text-teal-950" : "bg-teal-950/70 border-amber-100/10 text-amber-300"}`}>
+                <span className="text-base font-bold">{k}</span>
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-1.5 pt-1">
+            <button onClick={() => setText((t) => t + " ")} className="flex-1 h-10 rounded-md bg-teal-950 border border-amber-100/15 text-amber-100/60 text-xs hover:bg-teal-800 active:scale-95 transition">space</button>
+            <button onClick={() => setText((t) => t.slice(0, -1))} className="w-16 h-10 rounded-md bg-teal-950 border border-amber-100/15 text-amber-200 flex items-center justify-center hover:bg-teal-800 active:scale-95 transition"><Delete size={16} /></button>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-teal-900/60 border border-amber-100/10 rounded-lg p-3 sm:p-4 space-y-1.5">
+          {ZHUYIN_ROWS.map((row, ri) => (
+            <div key={ri} className="flex gap-1.5 overflow-x-auto pb-1 justify-center">
+              {row.map(([qw, sym]) => (
+                <button key={qw} onClick={() => pressKey(sym)} className={`shrink-0 w-11 h-14 rounded-md flex flex-col items-center justify-center border transition-all duration-150 ${pressed === sym ? "bg-amber-300 border-amber-200 scale-95 shadow-[0_0_12px_rgba(251,191,36,0.7)]" : "bg-teal-950 border-amber-100/15 hover:bg-teal-800"}`}>
+                  <span className={`text-lg ${pressed === sym ? "text-teal-950" : "text-amber-200"}`}>{sym}</span>
+                  <span className="text-[9px] text-amber-100/40 mt-0.5">{qw}</span>
+                </button>
+              ))}
+            </div>
+          ))}
+          <div className="flex gap-1.5 pt-1">
+            <button onClick={() => setText((t) => t + " ")} className="flex-1 h-10 rounded-md bg-teal-950 border border-amber-100/15 text-amber-100/60 text-xs hover:bg-teal-800 active:scale-95 transition">space (แบ่งพยางค์)</button>
+            <button onClick={() => setText((t) => t.slice(0, -1))} className="w-16 h-10 rounded-md bg-teal-950 border border-amber-100/15 text-amber-200 flex items-center justify-center hover:bg-teal-800 active:scale-95 transition"><Delete size={16} /></button>
+          </div>
+        </div>
+      )}
+
+      <div className="mt-6 bg-orange-50 rounded-lg p-4 border border-amber-800/20">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <p style={thaiFont} className="text-sm text-teal-950/70">
+            ลองพิมพ์：<span style={zhFont} className="text-lg font-semibold text-teal-950 ml-2">{target.zh}</span>
+            <span className="text-teal-950/50 ml-1">（{target.th}）</span>
+          </p>
+          <button onClick={() => setTargetIdx((i) => (i + 1) % TARGET_WORDS.length)} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-teal-950 text-amber-200 hover:bg-teal-900 active:scale-95 transition">
+            <Shuffle size={12} /> เปลี่ยนคำ
+          </button>
+        </div>
+        <div style={monoFont} className={`min-h-[3rem] rounded-md border-2 px-3 py-2 text-xl flex items-center ${matched ? "border-emerald-600 bg-emerald-50" : "border-teal-950/15 bg-white"}`}>
+          {text || <span style={thaiFont} className="text-teal-950/30 text-base">แตะปุ่มด้านบนเพื่อพิมพ์…</span>}
+        </div>
+        {matched && <p style={thaiFont} className="flex items-center gap-1 text-emerald-700 text-sm mt-2 font-medium"><Check size={16} /> ถูกต้อง!</p>}
+        <button onClick={() => setText("")} style={thaiFont} className="mt-3 text-xs text-teal-950/50 underline underline-offset-2">ล้างแล้วเริ่มใหม่</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------- */
+/* 測驗練習：字卡 + 選擇題                                       */
+/* ---------------------------------------------------------- */
+
+function FlashcardTab({ known, onToggleKnown }) {
+  const [scope, setScope] = useState("all");
+  const pool = scope === "travel" ? TRAVEL : scope === "chat" ? CHAT : ALL_PHRASES;
+  const [idx, setIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const card = pool[idx % pool.length];
+  const go = (dir) => { setFlipped(false); setIdx((i) => (i + dir + pool.length) % pool.length); };
+  useEffect(() => setIdx(0), [scope]);
+
+  return (
+    <div>
+      <div className="flex gap-2 mb-6">
+        {[["all", "ทั้งหมด"], ["travel", "ท่องเที่ยว"], ["chat", "แชท"]].map(([v, label]) => (
+          <button key={v} onClick={() => setScope(v)} className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${scope === v ? "bg-amber-400 text-teal-950" : "bg-teal-900 text-amber-200/70"}`}>{label}</button>
+        ))}
+      </div>
+
+      <div className="max-w-md mx-auto">
+        <div onClick={() => setFlipped((f) => !f)} className="cursor-pointer select-none bg-orange-50 rounded-xl border border-amber-800/20 shadow-md min-h-[220px] flex flex-col items-center justify-center p-6 text-center relative">
+          <button onClick={(e) => { e.stopPropagation(); onToggleKnown(card.id); }} className={`absolute top-3 right-3 p-1.5 rounded-full ${known.has(card.id) ? "text-amber-500" : "text-teal-950/20"}`}>
+            <Star size={18} fill={known.has(card.id) ? "currentColor" : "none"} />
+          </button>
+          {!flipped ? (
+            <>
+              <p style={zhFont} className="text-3xl font-bold text-teal-950 mb-2">{card.zh}</p>
+              <p style={monoFont} className="text-sm text-emerald-800">{card.py}</p>
+              <p style={thaiFont} className="text-xs text-teal-950/40 mt-4">แตะการ์ดเพื่อดูความหมาย</p>
+            </>
+          ) : (
+            <>
+              <p style={thaiFont} className="text-2xl font-semibold text-teal-950">{card.th}</p>
+              <p style={zhFont} className="text-sm text-teal-950/50 mt-3">{card.zh}</p>
+            </>
+          )}
+          <button onClick={(e) => { e.stopPropagation(); speak(card.zh); }} className="absolute bottom-3 left-3 p-1.5 rounded-full bg-teal-950 text-amber-300"><Volume2 size={14} /></button>
+        </div>
+        <div className="flex items-center justify-between mt-4">
+          <button onClick={() => go(-1)} className="flex items-center gap-1 px-4 py-2 rounded-md bg-teal-900 text-amber-200 text-sm active:scale-95 transition"><ArrowLeft size={14} /> ก่อนหน้า</button>
+          <span className="text-xs text-amber-100/50">{(idx % pool.length) + 1} / {pool.length}</span>
+          <button onClick={() => go(1)} className="flex items-center gap-1 px-4 py-2 rounded-md bg-teal-900 text-amber-200 text-sm active:scale-95 transition">ถัดไป <ArrowRight size={14} /></button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OptionButton({ opt, state, onClick }) {
+  let cls = "bg-orange-50 border-amber-800/20 text-teal-950 hover:border-amber-500";
+  if (state === "reveal-correct") cls = "bg-emerald-100 border-emerald-600 text-emerald-900";
+  else if (state === "selected-wrong") cls = "bg-rose-100 border-rose-600 text-rose-900";
+  else if (state === "dimmed") cls = "bg-orange-50/40 border-amber-800/10 text-teal-950/40";
+  return (
+    <button onClick={onClick} className={`w-full flex items-center justify-between gap-2 px-4 py-3 rounded-lg border-2 text-left transition active:scale-[0.98] ${cls}`}>
+      <span style={opt.big ? zhFont : thaiFont} className={opt.big ? "text-2xl font-semibold" : "text-sm font-medium"}>{opt.label}</span>
+      {state === "reveal-correct" && <Check size={18} />}
+      {state === "selected-wrong" && <X size={18} />}
+    </button>
+  );
+}
+
+const DIRECTION_LABEL = { "zh-th": "จีน → ไทย", "th-zh": "ไทย → จีน" };
+
+function QuizTab() {
+  const [direction, setDirection] = useState("zh-th");
+  const buildQ = useCallback(() => {
+    const correct = ALL_PHRASES[Math.floor(Math.random() * ALL_PHRASES.length)];
+    const distractors = shuffle(ALL_PHRASES.filter((p) => p.id !== correct.id)).slice(0, 3);
+    const reverse = direction === "th-zh";
+    const options = reverse
+      ? shuffle([correct, ...distractors]).map((p) => ({ key: p.id, label: p.zh, big: true }))
+      : shuffle([correct, ...distractors]).map((p) => ({ key: p.id, label: p.th }));
+    return { correct, options, reverse };
+  }, [direction]);
+
+  const [q, setQ] = useState(buildQ);
+  const [picked, setPicked] = useState(null);
+  const [score, setScore] = useState({ right: 0, total: 0 });
+  useEffect(() => { setQ(buildQ()); setPicked(null); }, [direction]);
+
+  const pick = (opt) => {
+    if (picked) return;
+    setPicked(opt.key);
+    setScore((s) => ({ right: s.right + (opt.key === q.correct.id ? 1 : 0), total: s.total + 1 }));
+  };
+  const next = () => { setQ(buildQ()); setPicked(null); };
+
+  return (
+    <div className="max-w-md mx-auto">
+      <div className="flex items-center justify-center gap-2 mb-5">
+        {["zh-th", "th-zh"].map((d) => (
+          <button key={d} onClick={() => setDirection(d)} className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition ${direction === d ? "bg-amber-400 text-teal-950" : "bg-teal-900 text-amber-200/70"}`}>{DIRECTION_LABEL[d]}</button>
+        ))}
+      </div>
+      <div className="flex items-center justify-between mb-3">
+        <p style={thaiFont} className="text-sm text-amber-100/70">ตอบถูก {score.right} / {score.total} ข้อ</p>
+        <button onClick={() => setScore({ right: 0, total: 0 })} className="flex items-center gap-1 text-xs text-amber-100/50 underline underline-offset-2"><RotateCcw size={12} /> รีเซ็ตคะแนน</button>
+      </div>
+      <div className="bg-orange-50 rounded-xl border border-amber-800/20 shadow-md p-6 text-center">
+        {q.reverse ? (
+          <>
+            <p style={thaiFont} className="text-xs text-teal-950/40 mb-2">หาคำจีนที่ตรงกับความหมายนี้</p>
+            <p style={thaiFont} className="text-2xl font-semibold text-teal-950">{q.correct.th}</p>
+          </>
+        ) : (
+          <>
+            <p style={thaiFont} className="text-xs text-teal-950/40 mb-2">ประโยคนี้แปลว่าอะไร？</p>
+            <p style={zhFont} className="text-2xl font-bold text-teal-950 mb-1">{q.correct.zh}</p>
+            <p style={monoFont} className="text-sm text-emerald-800 mb-1">{q.correct.py}</p>
+          </>
+        )}
+        <button onClick={() => speak(q.correct.zh)} className="inline-flex items-center gap-1 text-xs text-teal-950/50 mt-1"><Volume2 size={12} /> เล่นเสียง</button>
+      </div>
+      <div className="grid grid-cols-1 gap-2 mt-4">
+        {q.options.map((opt) => {
+          let state = "idle";
+          if (picked) { if (opt.key === q.correct.id) state = "reveal-correct"; else if (opt.key === picked) state = "selected-wrong"; else state = "dimmed"; }
+          return <OptionButton key={opt.key} opt={opt} state={state} onClick={() => pick(opt)} />;
+        })}
+      </div>
+      {picked && <button onClick={next} className="w-full mt-4 py-3 rounded-md bg-amber-400 text-teal-950 font-semibold flex items-center justify-center gap-1 active:scale-95 transition">ข้อถัดไป <ArrowRight size={16} /></button>}
+    </div>
+  );
+}
+
+function QuizSection({ known, onToggleKnown }) {
+  const [mode, setMode] = useState("flash");
+  return (
+    <div>
+      <div className="flex gap-2 mb-6">
+        {[["flash", "ทบทวนด้วยการ์ด"], ["quiz", "แบบทดสอบปรนัย"]].map(([v, label]) => (
+          <button key={v} onClick={() => setMode(v)} className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${mode === v ? "bg-amber-400 text-teal-950" : "bg-teal-900 text-amber-200/70"}`}>{label}</button>
+        ))}
+        {known.size > 0 && <span style={thaiFont} className="ml-auto text-xs text-amber-100/50 self-center flex items-center gap-1"><Star size={12} fill="currentColor" className="text-amber-400" /> จำได้แล้ว {known.size} ประโยค</span>}
+      </div>
+      {mode === "flash" ? <FlashcardTab known={known} onToggleKnown={onToggleKnown} /> : <QuizTab />}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------- */
+/* 課程闖關                                                     */
+/* ---------------------------------------------------------- */
+
+const EASY_CHARS = CHARACTERS.filter((c) => c.group === "easy");
+const MEDIUM_CHARS = CHARACTERS.filter((c) => c.group === "medium");
+const HARD_CHARS = CHARACTERS.filter((c) => c.group === "hard");
+
+const LESSONS = [
+  { id: "l-easy", topic: "char", domain: "char", unit: "ตัวอักษร · ง่าย", sub: "12 ตัว ขีดน้อย", pool: EASY_CHARS },
+  { id: "l-medium", topic: "char", domain: "char", unit: "ตัวอักษร · กลาง", sub: "9 ตัว", pool: MEDIUM_CHARS },
+  { id: "l-hard", topic: "char", domain: "char", unit: "ตัวอักษร · ยาก", sub: "3 ตัว ขีดเยอะ", pool: HARD_CHARS },
+  { id: "l-travel1", topic: "travel", domain: "phrase", unit: "ท่องเที่ยว (1/3)", sub: "ทักทาย ต่อรองราคา", pool: TRAVEL.slice(0, 8) },
+  { id: "l-travel2", topic: "travel", domain: "phrase", unit: "ท่องเที่ยว (2/3)", sub: "อาหาร ถามทาง", pool: TRAVEL.slice(8, 16) },
+  { id: "l-travel3", topic: "travel", domain: "phrase", unit: "ท่องเที่ยว (3/3)", sub: "ทานที่นี่/ห่อกลับ จ่ายเงิน", pool: TRAVEL.slice(16, 24) },
+  { id: "l-chat1", topic: "chat", domain: "phrase", unit: "บทสนทนา (1/2)", sub: "ทักทาย แนะนำตัว", pool: CHAT.slice(0, 9) },
+  { id: "l-chat2", topic: "chat", domain: "phrase", unit: "บทสนทนา (2/2)", sub: "นัดเวลา พูดคุยเล่น", pool: CHAT.slice(9) },
+];
+
+const TOPIC_ICON = { char: PenLine, travel: Plane, chat: MessageCircle };
+const LESSON_DIRECTION_LABEL = { "zh-th": "จีน → ไทย", "th-zh": "ไทย → จีน", mixed: "ผสม" };
+
+function pickDistractors(pool, exclude, n) { return shuffle(pool.filter((x) => x !== exclude)).slice(0, n); }
+
+function kindsForLesson(lesson, direction) {
+  if (lesson.domain === "char") {
+    if (direction === "zh-th") return ["c_meaning", "c_listen"];
+    if (direction === "th-zh") return ["c_reverse"];
+    return ["c_meaning", "c_listen", "c_reverse"];
+  }
+  if (direction === "zh-th") return ["p_meaning", "p_listen"];
+  if (direction === "th-zh") return ["p_reverse", "p_spell"];
+  return ["p_meaning", "p_listen", "p_reverse", "p_spell"];
+}
+
+function buildQuestion(lesson, item, index, direction = "mixed") {
+  const kinds = kindsForLesson(lesson, direction);
+  const kind = kinds[index % kinds.length];
+
+  if (lesson.domain === "char") {
+    const distractors = pickDistractors(CHARACTERS, item, 3);
+    if (kind === "c_meaning") {
+      const opts = shuffle([item, ...distractors]).map((c) => ({ key: c.c, label: c.th }));
+      return { kind, item, prompt: { glyph: item.c }, options: opts, correctKey: item.c };
+    }
+    if (kind === "c_listen") {
+      const opts = shuffle([item, ...distractors]).map((c) => ({ key: c.c, label: c.c, big: true }));
+      return { kind, item, prompt: { audio: item.c }, options: opts, correctKey: item.c };
+    }
+    const opts = shuffle([item, ...distractors]).map((c) => ({ key: c.c, label: c.c, big: true }));
+    return { kind, item, prompt: { text: item.th }, options: opts, correctKey: item.c };
+  }
+
+  const distractors = pickDistractors(ALL_PHRASES, item, 3);
+  if (kind === "p_meaning") {
+    const opts = shuffle([item, ...distractors]).map((p) => ({ key: p.id, label: p.th }));
+    return { kind, item, prompt: { zh: item.zh, py: item.py }, options: opts, correctKey: item.id };
+  }
+  if (kind === "p_listen") {
+    const opts = shuffle([item, ...distractors]).map((p) => ({ key: p.id, label: p.th }));
+    return { kind, item, prompt: { audio: item.zh }, options: opts, correctKey: item.id };
+  }
+  if (kind === "p_reverse") {
+    const opts = shuffle([item, ...distractors]).map((p) => ({ key: p.id, label: p.zh, big: true }));
+    return { kind, item, prompt: { text: item.th }, options: opts, correctKey: item.id };
+  }
+  const tokens = item.py.replace(/[?？]/g, "").split(/\s+/).filter(Boolean);
+  return { kind, item, prompt: { text: item.th, audio: item.zh }, tiles: shuffle(tokens), correctTiles: tokens };
+}
+
+function LessonGame({ lesson, direction, onExit, onComplete }) {
+  const order = useMemo(() => shuffle(lesson.pool), [lesson]);
+  const questions = useMemo(() => order.map((item, i) => buildQuestion(lesson, item, i, direction)), [order, lesson, direction]);
+
+  const [qIndex, setQIndex] = useState(0);
+  const [hearts, setHearts] = useState(3);
+  const [selected, setSelected] = useState(null);
+  const [tiles, setTiles] = useState([]);
+  const [answered, setAnswered] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [mistakes, setMistakes] = useState(0);
+  const q = questions[qIndex];
+
+  const markResult = (correct) => {
+    setAnswered(true); setIsCorrect(correct);
+    if (!correct) { setMistakes((m) => m + 1); setHearts((h) => h - 1); }
+  };
+  const handleChoice = (opt) => { if (answered) return; setSelected(opt.key); markResult(opt.key === q.correctKey); };
+  const addTile = (tok, tokIdx) => { if (answered) return; setTiles((t) => [...t, { tok, tokIdx }]); };
+  const removeTile = (i) => { if (answered) return; setTiles((t) => t.filter((_, idx) => idx !== i)); };
+  const submitSpell = () => {
+    if (answered || tiles.length !== q.correctTiles.length) return;
+    markResult(tiles.map((t) => t.tok).join(" ") === q.correctTiles.join(" "));
+  };
+  const handleContinue = () => {
+    if (hearts <= 0) { onComplete(false, mistakes); return; }
+    if (qIndex + 1 >= questions.length) { onComplete(true, mistakes); return; }
+    setQIndex((i) => i + 1); setSelected(null); setTiles([]); setAnswered(false); setIsCorrect(false);
+  };
+  const usedTokIdx = new Set(tiles.map((t) => t.tokIdx));
+
+  return (
+    <div className="max-w-md mx-auto">
+      <div className="flex items-center gap-3 mb-5">
+        <button onClick={onExit} className="text-amber-100/50 hover:text-amber-100 p-1"><X size={20} /></button>
+        <div className="flex-1 h-2.5 bg-teal-900 rounded-full overflow-hidden">
+          <div className="h-full bg-amber-400 transition-all duration-300" style={{ width: `${(qIndex / questions.length) * 100}%` }} />
+        </div>
+        <div className="flex items-center gap-1 text-rose-400">
+          {[0, 1, 2].map((i) => <Heart key={i} size={18} fill={i < hearts ? "currentColor" : "none"} className={i < hearts ? "" : "text-rose-400/30"} />)}
+        </div>
+      </div>
+
+      <div className="bg-orange-50 rounded-xl border border-amber-800/20 shadow-md p-6 text-center min-h-[180px] flex flex-col items-center justify-center">
+        {q.prompt.glyph && (
+          <>
+            <p style={thaiFont} className="text-xs text-teal-950/40 mb-3">ตัวอักษรนี้แปลว่าอะไร？</p>
+            <p style={zhFont} className="text-6xl font-bold text-teal-950">{q.prompt.glyph}</p>
+          </>
+        )}
+        {q.prompt.audio && !q.prompt.text && (
+          <>
+            <p style={thaiFont} className="text-xs text-teal-950/40 mb-3">ฟังเสียงแล้วเลือกคำตอบ</p>
+            <button onClick={() => speak(q.prompt.audio)} className="p-5 rounded-full bg-teal-950 text-amber-300 active:scale-95 transition"><Volume2 size={28} /></button>
+          </>
+        )}
+        {q.prompt.zh && (
+          <>
+            <p style={thaiFont} className="text-xs text-teal-950/40 mb-2">ประโยคนี้แปลว่าอะไร？</p>
+            <p style={zhFont} className="text-2xl font-bold text-teal-950">{q.prompt.zh}</p>
+            <p style={monoFont} className="text-sm text-emerald-800 mt-1">{q.prompt.py}</p>
+          </>
+        )}
+        {q.prompt.text && q.kind !== "p_spell" && (
+          <>
+            <p style={thaiFont} className="text-xs text-teal-950/40 mb-3">หา{lesson.domain === "char" ? "ตัวอักษร" : "ประโยคภาษาจีน"}ที่ตรงกับความหมายนี้</p>
+            <p style={thaiFont} className="text-2xl font-semibold text-teal-950">{q.prompt.text}</p>
+          </>
+        )}
+        {q.kind === "p_spell" && (
+          <>
+            <p style={thaiFont} className="text-xs text-teal-950/40 mb-2">เรียงพินอินให้ถูกลำดับ</p>
+            <p style={thaiFont} className="text-xl font-semibold text-teal-950 mb-1">{q.prompt.text}</p>
+            <button onClick={() => speak(q.prompt.audio)} className="inline-flex items-center gap-1 text-xs text-teal-950/50"><Volume2 size={12} /> เล่นเสียง</button>
+          </>
+        )}
+      </div>
+
+      {q.kind === "p_spell" && (
+        <div className="mt-4">
+          <div className={`min-h-[3rem] rounded-md border-2 px-3 py-2 flex flex-wrap gap-2 items-center ${answered ? (isCorrect ? "border-emerald-600 bg-emerald-50" : "border-rose-600 bg-rose-50") : "border-teal-950/15 bg-white"}`}>
+            {tiles.length === 0 && <span style={thaiFont} className="text-teal-950/30 text-sm">แตะปุ่มด้านล่างเพื่อเรียงคำ…</span>}
+            {tiles.map((t, i) => <button key={i} onClick={() => removeTile(i)} style={monoFont} className="px-3 py-1.5 rounded-md bg-teal-950 text-amber-200 text-sm">{t.tok}</button>)}
+          </div>
+          <div className="flex flex-wrap gap-2 mt-3 justify-center">
+            {q.tiles.map((tok, i) => (
+              <button key={i} disabled={usedTokIdx.has(i) || answered} onClick={() => addTile(tok, i)} style={monoFont} className={`px-3 py-1.5 rounded-md text-sm border-2 transition ${usedTokIdx.has(i) ? "opacity-0 pointer-events-none" : "bg-orange-50 border-amber-800/20 text-teal-950 active:scale-95"}`}>{tok}</button>
+            ))}
+          </div>
+          {!answered && (
+            <button onClick={submitSpell} disabled={tiles.length !== q.correctTiles.length} style={thaiFont} className="w-full mt-4 py-3 rounded-md bg-amber-400 disabled:opacity-30 text-teal-950 font-semibold transition active:scale-95">ตรวจคำตอบ</button>
+          )}
+        </div>
+      )}
+
+      {q.kind !== "p_spell" && (
+        <div className="grid grid-cols-1 gap-2 mt-4">
+          {q.options.map((opt) => {
+            let state = "idle";
+            if (answered) { if (opt.key === q.correctKey) state = "reveal-correct"; else if (opt.key === selected) state = "selected-wrong"; else state = "dimmed"; }
+            return <OptionButton key={opt.key} opt={opt} state={state} onClick={() => handleChoice(opt)} />;
+          })}
+        </div>
+      )}
+
+      {answered && (
+        <div className="mt-4">
+          <p style={thaiFont} className={`text-sm font-medium flex items-center gap-1.5 ${isCorrect ? "text-emerald-300" : "text-rose-300"}`}>
+            {isCorrect ? <><Check size={16} /> ถูกต้อง!</> : <><X size={16} /> ผิด{q.kind === "p_spell" ? `　เฉลย：${q.correctTiles.join(" ")}` : ""}</>}
+          </p>
+          <button onClick={handleContinue} style={thaiFont} className="w-full mt-2 py-3 rounded-md bg-amber-400 text-teal-950 font-semibold flex items-center justify-center gap-1 active:scale-95 transition">
+            {hearts <= 0 ? "ดูผลลัพธ์" : qIndex + 1 >= questions.length ? "จบด่าน" : "ต่อไป"} <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ResultScreen({ success, mistakes, xpEarned, streak, onDone }) {
+  return (
+    <div className="max-w-md mx-auto text-center py-10">
+      <div className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center mb-5 ${success ? "bg-amber-400 text-teal-950" : "bg-teal-900 text-amber-200/50"}`}>
+        {success ? <Trophy size={36} /> : <Heart size={36} />}
+      </div>
+      <h2 style={thaiFont} className="text-2xl font-bold text-orange-50 mb-1">{success ? "ผ่านด่านแล้ว!" : "หัวใจหมดแล้ว"}</h2>
+      <p style={thaiFont} className="text-amber-100/60 text-sm mb-6">{success ? (mistakes === 0 ? "ถูกหมดทุกข้อ สมบูรณ์แบบ!" : `ผ่านแล้ว ตอบผิด ${mistakes} ข้อ`) : "ไม่เป็นไร ลองใหม่อีกครั้งนะ"}</p>
+      {success && (
+        <div className="flex items-center justify-center gap-6 mb-8">
+          <div className="flex items-center gap-1.5 text-amber-300"><Zap size={20} /> <span className="font-semibold">+{xpEarned} XP</span></div>
+          <div className="flex items-center gap-1.5 text-orange-400"><Flame size={20} /> <span style={thaiFont} className="font-semibold">ต่อเนื่อง {streak} วัน</span></div>
+        </div>
+      )}
+      <button onClick={onDone} style={thaiFont} className="px-8 py-3 rounded-full bg-amber-400 text-teal-950 font-semibold active:scale-95 transition">{success ? "กลับไปที่แผนที่ด่าน" : "ลองใหม่อีกครั้ง"}</button>
+    </div>
+  );
+}
+
+function LessonNode({ lesson, index, status, onClick }) {
+  const Icon = TOPIC_ICON[lesson.topic];
+  const offset = index % 3 === 1 ? "translate-x-8" : index % 3 === 2 ? "-translate-x-8" : "";
+  let circleCls = "bg-teal-900 text-amber-100/20 border-amber-100/10";
+  if (status === "current") circleCls = "bg-amber-400 text-teal-950 border-amber-300 shadow-[0_0_0_6px_rgba(251,191,36,0.15)]";
+  else if (status === "done") circleCls = "bg-emerald-600 text-white border-emerald-500";
+  return (
+    <div className={`relative flex flex-col items-center ${offset}`}>
+      <button onClick={onClick} disabled={status === "locked"} className={`w-16 h-16 rounded-full border-4 flex items-center justify-center transition active:scale-95 ${circleCls} ${status === "locked" ? "cursor-not-allowed" : ""}`}>
+        {status === "locked" ? <Lock size={22} /> : status === "done" ? <Check size={26} /> : lesson.topic === "char" ? <span style={zhFont} className="text-2xl font-bold">{lesson.pool[0].c}</span> : <Icon size={24} />}
+      </button>
+      <p style={thaiFont} className="text-xs text-amber-100/60 mt-2 text-center max-w-[6.5rem] leading-tight">{lesson.unit}</p>
+      <p style={thaiFont} className="text-[10px] text-amber-100/30 text-center max-w-[6.5rem] leading-tight">{lesson.sub}</p>
+    </div>
+  );
+}
+
+function LessonsTab() {
+  const [completed, setCompleted] = useState(new Set());
+  const [xp, setXp] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [direction, setDirection] = useState("mixed");
+  const [activeLessonId, setActiveLessonId] = useState(null);
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try { const r = await storageGet("zh-lesson-progress"); if (r?.value) setCompleted(new Set(JSON.parse(r.value))); } catch (e) {}
+      try { const r2 = await storageGet("zh-xp-streak"); if (r2?.value) { const d = JSON.parse(r2.value); setXp(d.xp || 0); setStreak(d.streak || 0); } } catch (e) {}
+      try { const r3 = await storageGet("zh-lesson-direction"); if (r3?.value) setDirection(r3.value); } catch (e) {}
+    })();
+  }, []);
+
+  const changeDirection = (d) => { setDirection(d); (async () => { try { await storageSet("zh-lesson-direction", d); } catch (e) {} })(); };
+  const activeLesson = LESSONS.find((l) => l.id === activeLessonId);
+
+  const handleComplete = async (success, mistakes) => {
+    if (!success) { setResult({ success: false, mistakes, xpEarned: 0 }); return; }
+    const earned = mistakes === 0 ? 15 : 10;
+    const newCompleted = new Set(completed); newCompleted.add(activeLessonId);
+    const today = new Date().toISOString().slice(0, 10);
+    let newStreak = streak;
+    try {
+      const r = await storageGet("zh-xp-streak");
+      const prev = r?.value ? JSON.parse(r.value) : { xp: 0, streak: 0, last: null };
+      if (prev.last === today) newStreak = prev.streak || streak;
+      else if (prev.last) { const diffDays = Math.round((new Date(today) - new Date(prev.last)) / 86400000); newStreak = diffDays === 1 ? (prev.streak || 0) + 1 : 1; }
+      else newStreak = 1;
+      const newXp = (prev.xp || 0) + earned;
+      await storageSet("zh-xp-streak", JSON.stringify({ xp: newXp, streak: newStreak, last: today }));
+      setXp(newXp);
+    } catch (e) { setXp((x) => x + earned); newStreak = streak || 1; }
+    setStreak(newStreak); setCompleted(newCompleted);
+    try { await storageSet("zh-lesson-progress", JSON.stringify([...newCompleted])); } catch (e) {}
+    setResult({ success: true, mistakes, xpEarned: earned, streak: newStreak });
+  };
+
+  if (activeLesson && !result) return <LessonGame lesson={activeLesson} direction={direction} onExit={() => setActiveLessonId(null)} onComplete={handleComplete} />;
+  if (result) return <ResultScreen success={result.success} mistakes={result.mistakes} xpEarned={result.xpEarned} streak={result.streak || streak} onDone={() => { setResult(null); setActiveLessonId(null); }} />;
+
+  return (
+    <div>
+      <div className="flex items-center justify-center gap-6 mb-5">
+        <div className="flex items-center gap-1.5 text-amber-300"><Zap size={18} /> <span className="font-semibold text-sm">{xp} XP</span></div>
+        <div className="flex items-center gap-1.5 text-orange-400"><Flame size={18} /> <span style={thaiFont} className="font-semibold text-sm">ต่อเนื่อง {streak} วัน</span></div>
+      </div>
+      <div className="flex items-center justify-center gap-2 mb-8">
+        {["zh-th", "th-zh", "mixed"].map((d) => (
+          <button key={d} onClick={() => changeDirection(d)} className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition ${direction === d ? "bg-amber-400 text-teal-950" : "bg-teal-900 text-amber-200/70"}`}>{LESSON_DIRECTION_LABEL[d]}</button>
+        ))}
+      </div>
+      <div className="relative flex flex-col items-center gap-8 max-w-xs mx-auto">
+        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-amber-100/10 -z-10" />
+        {LESSONS.map((lesson, i) => {
+          const status = completed.has(lesson.id) ? "done" : (i === 0 || completed.has(LESSONS[i - 1].id)) ? "current" : "locked";
+          return <LessonNode key={lesson.id} lesson={lesson} index={i} status={status} onClick={() => status !== "locked" && setActiveLessonId(lesson.id)} />;
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------- */
+/* 主元件                                                      */
+/* ---------------------------------------------------------- */
+
+const TABS = [
+  { id: "lessons", label: "ด่านบทเรียน", icon: Trophy },
+  { id: "write", label: "ฝึกเขียน", icon: PenLine },
+  { id: "type", label: "พิมพ์จีน", icon: Keyboard },
+  { id: "travel", label: "ท่องเที่ยว", icon: Plane },
+  { id: "chat", label: "แชท", icon: MessageCircle },
+  { id: "quiz", label: "แบบทดสอบ", icon: GraduationCap },
+];
+
+function ChineseFromThai() {
+  const [tab, setTab] = useState("lessons");
+  const [known, setKnown] = useState(new Set());
+  const [knownChars, setKnownChars] = useState(new Set());
+
+  useEffect(() => {
+    (async () => {
+      try { const res = await storageGet("zh-known-phrases"); if (res?.value) setKnown(new Set(JSON.parse(res.value))); } catch (e) {}
+      try { const res2 = await storageGet("zh-known-chars"); if (res2?.value) setKnownChars(new Set(JSON.parse(res2.value))); } catch (e) {}
+    })();
+  }, []);
+
+  const toggleKnown = async (id) => {
+    setKnown((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      (async () => { try { await storageSet("zh-known-phrases", JSON.stringify([...next])); } catch (e) {} })();
+      return next;
+    });
+  };
+  const toggleKnownChar = async (id) => {
+    setKnownChars((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      (async () => { try { await storageSet("zh-known-chars", JSON.stringify([...next])); } catch (e) {} })();
+      return next;
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-teal-950" style={thaiFont}>
+      <div className="border-b border-amber-100/10 px-5 pt-8 pb-4">
+        <p className="text-amber-400 text-xs tracking-[0.3em] uppercase mb-1" style={monoFont}>Pinyin · Zhuyin · 中文</p>
+        <h1 style={zhFont} className="text-3xl font-black text-orange-50">แบกเป้ภาษาจีน</h1>
+        <p style={thaiFont} className="text-amber-100/60 text-sm mt-1">ด่านบทเรียน・ฝึกเขียน・พิมพ์จีน・ท่องเที่ยว・แชท ครบในที่เดียว</p>
+      </div>
+
+      <div className="sticky top-0 z-10 bg-teal-950/95 backdrop-blur border-b border-amber-100/10 px-3 py-2 overflow-x-auto">
+        <div className="flex gap-2 min-w-max">
+          {TABS.map(({ id, label, icon: Icon }) => (
+            <button key={id} onClick={() => setTab(id)} className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition ${tab === id ? "bg-amber-400 text-teal-950" : "text-amber-100/60 hover:text-amber-100"}`}>
+              <Icon size={15} /> {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="px-5 py-6 max-w-3xl mx-auto">
+        {tab === "lessons" && <LessonsTab />}
+        {tab === "write" && <WritingTab known={knownChars} onToggleKnown={toggleKnownChar} />}
+        {tab === "type" && <TypingTab />}
+        {tab === "travel" && <PhraseGrid list={TRAVEL} known={known} onToggleKnown={toggleKnown} note="เสียงวรรณยุกต์ (声调) สำคัญมาก ออกเสียงผิดวรรณยุกต์ความหมายอาจเปลี่ยนไปเลย" />}
+        {tab === "chat" && <PhraseGrid list={CHAT} known={known} onToggleKnown={toggleKnown} />}
+        {tab === "quiz" && <QuizSection known={known} onToggleKnown={toggleKnown} />}
+      </div>
+
+      <div className="px-5 pb-8 pt-2 max-w-3xl mx-auto">
+        <p style={thaiFont} className="text-xs text-amber-100/30">กดรูปดาวเพื่อบันทึกคำที่จำได้แล้ว ระบบจะบันทึกให้อัตโนมัติ การเล่นเสียงขึ้นอยู่กับว่าอุปกรณ์ของคุณรองรับเสียงภาษาจีนหรือไม่ หากไม่มีเสียง สามารถดูพินอินแทนได้</p>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<ChineseFromThai />);
+</script>
+
+<script>
+  var source = document.getElementById("app-source").textContent;
+  var compiled = Babel.transform(source, {
+    presets: [["react", { runtime: "classic" }]],
+  }).code;
+  var script = document.createElement("script");
+  script.textContent = compiled;
+  document.body.appendChild(script);
+</script>
+</body>
+</html>
