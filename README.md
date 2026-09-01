@@ -9,30 +9,42 @@
 ```
 .
 ├── index.html
-├── Learning_Thai_in_Chinese.html               # 中文介面／學泰語
-└── Learning_Traditional_Chinese_in_Thai.html   # 泰文介面／學中文
+├── Learning_Thai_in_Chinese.html
+└── Learning_Traditional_Chinese_in_Thai.html
 ```
 
-### Learning_Thai_in_Chinese.html
-中文介面，學泰語：課程闖關（愛心／XP／連續天數）、44 個泰文子音手寫練習（含自動評分）、
-Kedmanee 標準鍵盤打字、42 句旅遊聊天短語、測驗練習。
+## 內容
 
-### Learning_Traditional_Chinese_in_Thai.html
-泰文介面，學中文（繁體）：ด่านบทเรียน、24 個基礎漢字手寫練習（含自動評分）、
-拼音／注音（大千式鍵盤）雙模式打字、42 句旅遊聊天短語、แบบทดสอบ。
+- **課程闖關**：泰語版 42 個子音、中文版 24 個漢字，各自一課，含例句強化練習
+- **手寫練習**：Canvas 描摹，含自動評分
+- **打字練習**：泰語 Kedmanee 鍵盤／中文拼音＋注音雙模式
+- **旅遊短語 / 聊天用語**：各 42 句
+- **口說練習**：麥克風錄音比對相似度（見下方說明）
+- **測驗練習**：字卡複習 + 選擇題
+
+## 無障礙 / 環境限制設計
+
+- **聽力題可跳過**：任何「只播音、不顯示文字」的聽力題旁都有「跳過這題」，跳過不扣血、
+  不算答錯，避免裝置沒聲音時卡關
+- **口說練習會主動偵測支援度**：頁面載入時就檢查瀏覽器是否支援 `SpeechRecognition`，
+  不支援時直接顯示停用狀態＋提示文字（需要電腦版 Chrome / Edge），不用等使用者點了才報錯
 
 ## 技術
 
-單一 HTML 檔案，透過 CDN 載入 React 18 + Babel Standalone + Tailwind CSS + Google Fonts。
-沒有後端，進度存在瀏覽器 `localStorage`。發音用 Web Speech API。手寫評分是純前端 canvas
-像素比對，不需要外部 API。
+React 18 + Babel Standalone + Tailwind CSS + Google Fonts，全部透過 CDN 載入。
+沒有後端，進度存在瀏覽器 `localStorage`。
+
+**手寫評分**：純前端 canvas 像素比對，離線也能算分。
+
+**口說練習**：Web Speech API 的 `SpeechRecognition`，需要麥克風權限與網路連線
+（辨識雲端處理），電腦版 Chrome / Edge 支援最好，Safari / Firefox 支援有限或不支援。
+分數是比對「辨識出的文字」跟目標句子的文字相似度，不是精準的發音評分，僅供參考。
 
 ## 部署到 GitHub Pages
 
 1. 把這三個檔案 push 到 repo 的 `main` branch 根目錄（不需要子資料夾）。
-2. Settings → Pages：Source 選 **Deploy from a branch**，Branch 選 **main**、
-   資料夾選 **/ (root)**，Save。
-3. 等 1-2 分鐘，網址：
+2. Settings → Pages：Source 選 Deploy from a branch，Branch 選 main、資料夾選 / (root)，Save。
+3. 網址：
    - `https://<帳號>.github.io/<repo>/`
    - `https://<帳號>.github.io/<repo>/Learning_Thai_in_Chinese.html`
    - `https://<帳號>.github.io/<repo>/Learning_Traditional_Chinese_in_Thai.html`

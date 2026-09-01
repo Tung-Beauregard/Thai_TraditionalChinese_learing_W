@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<title>Learning Traditional Chinese in Thai ｜ ด่านบทเรียน・ฝึกเขียน・พิมพ์จีน</title>
+<title>Learning Traditional Chinese in Thai ｜ 24 ตัวอักษร・ประโยคตัวอย่าง・ฝึกพูด</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Sarabun:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -120,6 +120,14 @@ const Trophy = (p) => (
     <path d="M17 5h3a2 2 0 0 1 0 4h-1" /><path d="M7 5H4a2 2 0 0 0 0 4h1" />
   </IconBase>
 );
+const Mic = (p) => (
+  <IconBase {...p}>
+    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+    <line x1="12" y1="19" x2="12" y2="23" />
+    <line x1="8" y1="23" x2="16" y2="23" />
+  </IconBase>
+);
 
 function storageGet(key) {
   const raw = localStorage.getItem(key);
@@ -153,30 +161,30 @@ const GROUP_COLOR = {
 };
 
 const CHARACTERS = [
-  { c: "一", py: "yī", zy: "ㄧ", strokes: 1, group: "easy", th: "หนึ่ง" },
-  { c: "二", py: "èr", zy: "ㄦˋ", strokes: 2, group: "easy", th: "สอง" },
-  { c: "三", py: "sān", zy: "ㄙㄢ", strokes: 3, group: "easy", th: "สาม" },
-  { c: "人", py: "rén", zy: "ㄖㄣˊ", strokes: 2, group: "easy", th: "คน" },
-  { c: "大", py: "dà", zy: "ㄉㄚˋ", strokes: 3, group: "easy", th: "ใหญ่" },
-  { c: "小", py: "xiǎo", zy: "ㄒㄧㄠˇ", strokes: 3, group: "easy", th: "เล็ก" },
-  { c: "不", py: "bù", zy: "ㄅㄨˋ", strokes: 4, group: "easy", th: "ไม่" },
-  { c: "水", py: "shuǐ", zy: "ㄕㄨㄟˇ", strokes: 4, group: "easy", th: "น้ำ" },
-  { c: "火", py: "huǒ", zy: "ㄏㄨㄛˇ", strokes: 4, group: "easy", th: "ไฟ" },
-  { c: "山", py: "shān", zy: "ㄕㄢ", strokes: 3, group: "easy", th: "ภูเขา" },
-  { c: "天", py: "tiān", zy: "ㄊㄧㄢ", strokes: 4, group: "easy", th: "ฟ้า / วัน" },
-  { c: "少", py: "shǎo", zy: "ㄕㄠˇ", strokes: 4, group: "easy", th: "น้อย" },
-  { c: "他", py: "tā", zy: "ㄊㄚ", strokes: 5, group: "medium", th: "เขา" },
-  { c: "好", py: "hǎo", zy: "ㄏㄠˇ", strokes: 6, group: "medium", th: "ดี" },
-  { c: "吃", py: "chī", zy: "ㄔ", strokes: 6, group: "medium", th: "กิน" },
-  { c: "多", py: "duō", zy: "ㄉㄨㄛ", strokes: 6, group: "medium", th: "มาก / เยอะ" },
-  { c: "在", py: "zài", zy: "ㄗㄞˋ", strokes: 6, group: "medium", th: "อยู่ที่" },
-  { c: "你", py: "nǐ", zy: "ㄋㄧˇ", strokes: 7, group: "medium", th: "คุณ" },
-  { c: "我", py: "wǒ", zy: "ㄨㄛˇ", strokes: 7, group: "medium", th: "ฉัน" },
-  { c: "是", py: "shì", zy: "ㄕˋ", strokes: 9, group: "medium", th: "คือ / ใช่" },
-  { c: "哪", py: "nǎ", zy: "ㄋㄚˇ", strokes: 9, group: "medium", th: "ไหน" },
-  { c: "喝", py: "hē", zy: "ㄏㄜ", strokes: 12, group: "hard", th: "ดื่ม" },
-  { c: "錢", py: "qián", zy: "ㄑㄧㄢˊ", strokes: 16, group: "hard", th: "เงิน" },
-  { c: "謝", py: "xiè", zy: "ㄒㄧㄝˋ", strokes: 17, group: "hard", th: "ขอบคุณ" },
+  { c: "一", py: "yī", zy: "ㄧ", strokes: 1, group: "easy", th: "หนึ่ง", sent: { zh: "一個人", py: "yí ge rén", th: "หนึ่งคน" } },
+  { c: "二", py: "èr", zy: "ㄦˋ", strokes: 2, group: "easy", th: "สอง", sent: { zh: "二加二是四", py: "èr jiā èr shì sì", th: "สองบวกสองเท่ากับสี่" } },
+  { c: "三", py: "sān", zy: "ㄙㄢ", strokes: 3, group: "easy", th: "สาม", sent: { zh: "三隻小貓", py: "sān zhī xiǎo māo", th: "แมวสามตัว" } },
+  { c: "人", py: "rén", zy: "ㄖㄣˊ", strokes: 2, group: "easy", th: "คน", sent: { zh: "他是好人", py: "tā shì hǎo rén", th: "เขาเป็นคนดี" } },
+  { c: "大", py: "dà", zy: "ㄉㄚˋ", strokes: 3, group: "easy", th: "ใหญ่", sent: { zh: "大山", py: "dà shān", th: "ภูเขาใหญ่" } },
+  { c: "小", py: "xiǎo", zy: "ㄒㄧㄠˇ", strokes: 3, group: "easy", th: "เล็ก", sent: { zh: "他很小", py: "tā hěn xiǎo", th: "เขาตัวเล็ก" } },
+  { c: "不", py: "bù", zy: "ㄅㄨˋ", strokes: 4, group: "easy", th: "ไม่", sent: { zh: "我不喝", py: "wǒ bù hē", th: "ฉันไม่ดื่ม" } },
+  { c: "水", py: "shuǐ", zy: "ㄕㄨㄟˇ", strokes: 4, group: "easy", th: "น้ำ", sent: { zh: "喝水", py: "hē shuǐ", th: "ดื่มน้ำ" } },
+  { c: "火", py: "huǒ", zy: "ㄏㄨㄛˇ", strokes: 4, group: "easy", th: "ไฟ", sent: { zh: "小心火", py: "xiǎoxīn huǒ", th: "ระวังไฟ" } },
+  { c: "山", py: "shān", zy: "ㄕㄢ", strokes: 3, group: "easy", th: "ภูเขา", sent: { zh: "爬山", py: "pá shān", th: "ปีนเขา" } },
+  { c: "天", py: "tiān", zy: "ㄊㄧㄢ", strokes: 4, group: "easy", th: "ฟ้า / วัน", sent: { zh: "今天很熱", py: "jīntiān hěn rè", th: "วันนี้ร้อนมาก" } },
+  { c: "少", py: "shǎo", zy: "ㄕㄠˇ", strokes: 4, group: "easy", th: "น้อย", sent: { zh: "少一點", py: "shǎo yìdiǎn", th: "น้อยลงหน่อย" } },
+  { c: "他", py: "tā", zy: "ㄊㄚ", strokes: 5, group: "medium", th: "เขา", sent: { zh: "他很大", py: "tā hěn dà", th: "เขาตัวใหญ่" } },
+  { c: "好", py: "hǎo", zy: "ㄏㄠˇ", strokes: 6, group: "medium", th: "ดี", sent: { zh: "你好嗎", py: "nǐ hǎo ma", th: "สบายดีไหม" } },
+  { c: "吃", py: "chī", zy: "ㄔ", strokes: 6, group: "medium", th: "กิน", sent: { zh: "我要吃飯", py: "wǒ yào chī fàn", th: "ฉันอยากกินข้าว" } },
+  { c: "多", py: "duō", zy: "ㄉㄨㄛ", strokes: 6, group: "medium", th: "มาก / เยอะ", sent: { zh: "多少人", py: "duōshǎo rén", th: "มีกี่คน" } },
+  { c: "在", py: "zài", zy: "ㄗㄞˋ", strokes: 6, group: "medium", th: "อยู่ที่", sent: { zh: "你在哪裡", py: "nǐ zài nǎlǐ", th: "คุณอยู่ที่ไหน" } },
+  { c: "你", py: "nǐ", zy: "ㄋㄧˇ", strokes: 7, group: "medium", th: "คุณ", sent: { zh: "你是誰", py: "nǐ shì shéi", th: "คุณคือใคร" } },
+  { c: "我", py: "wǒ", zy: "ㄨㄛˇ", strokes: 7, group: "medium", th: "ฉัน", sent: { zh: "我不是他", py: "wǒ bú shì tā", th: "ฉันไม่ใช่เขา" } },
+  { c: "是", py: "shì", zy: "ㄕˋ", strokes: 9, group: "medium", th: "คือ / ใช่", sent: { zh: "這是水", py: "zhè shì shuǐ", th: "นี่คือน้ำ" } },
+  { c: "哪", py: "nǎ", zy: "ㄋㄚˇ", strokes: 9, group: "medium", th: "ไหน", sent: { zh: "這是哪裡", py: "zhè shì nǎlǐ", th: "ที่นี่คือที่ไหน" } },
+  { c: "喝", py: "hē", zy: "ㄏㄜ", strokes: 12, group: "hard", th: "ดื่ม", sent: { zh: "喝湯", py: "hē tāng", th: "ดื่มซุป" } },
+  { c: "錢", py: "qián", zy: "ㄑㄧㄢˊ", strokes: 16, group: "hard", th: "เงิน", sent: { zh: "多少錢", py: "duōshǎo qián", th: "เท่าไหร่" } },
+  { c: "謝", py: "xiè", zy: "ㄒㄧㄝˋ", strokes: 17, group: "hard", th: "ขอบคุณ", sent: { zh: "謝謝你", py: "xièxie nǐ", th: "ขอบคุณ" } },
 ];
 
 /* ---------------------------------------------------------- */
@@ -285,6 +293,122 @@ function shuffle(arr) {
 }
 
 /* ---------------------------------------------------------- */
+/* ฝึกพูด: อัดเสียง + เทียบข้อความที่ระบบถอดเสียงได้กับประโยคเป้าหมาย   */
+/* ใช้ Web Speech API ของเบราว์เซอร์ (รองรับดีที่สุดใน Chrome/Edge)   */
+/* ต้องต่อเน็ตตอนถอดเสียง คะแนนวัดความ "ใกล้เคียงของข้อความที่ได้ยิน" */
+/* ไม่ใช่คะแนนความแม่นยำของการออกเสียงจริง ๆ ใช้เป็นแนวทางคร่าว ๆ     */
+/* ---------------------------------------------------------- */
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] : 1 + Math.min(dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]);
+    }
+  }
+  return dp[m][n];
+}
+
+function textSimilarity(a, b) {
+  const clean = (s) => (s || "").replace(/[\s.,!?？！，。]/g, "");
+  const s1 = clean(a), s2 = clean(b);
+  if (!s1.length && !s2.length) return 100;
+  const dist = levenshtein(s1, s2);
+  const maxLen = Math.max(s1.length, s2.length) || 1;
+  return Math.max(0, Math.round((1 - dist / maxLen) * 100));
+}
+
+function speechTier(pct) {
+  if (pct >= 80) return { label: "ใกล้เคียงมาก!", color: "text-emerald-600" };
+  if (pct >= 55) return { label: "ใกล้เคียง ฝึกอีกหน่อย", color: "text-amber-600" };
+  if (pct >= 25) return { label: "ยังต่างอยู่ ลองใหม่", color: "text-orange-600" };
+  return { label: "ต่างเยอะ ลองพูดช้า ๆ ดู", color: "text-rose-600" };
+}
+
+function SpeechPracticeButton({ targetText }) {
+  const [supported, setSupported] = useState(true);
+  const [state, setState] = useState("idle");
+  const [result, setResult] = useState(null);
+  const [errMsg, setErrMsg] = useState("");
+
+  useEffect(() => {
+    const SR = typeof window !== "undefined" && (window.SpeechRecognition || window.webkitSpeechRecognition);
+    setSupported(!!SR);
+  }, []);
+
+  const start = () => {
+    const SR = typeof window !== "undefined" && (window.SpeechRecognition || window.webkitSpeechRecognition);
+    if (!SR) {
+      setSupported(false);
+      return;
+    }
+    let recog;
+    try {
+      recog = new SR();
+    } catch (e) {
+      setState("error");
+      setErrMsg("เปิดใช้งานไม่ได้");
+      return;
+    }
+    recog.lang = "zh-TW";
+    recog.interimResults = false;
+    recog.maxAlternatives = 1;
+    setState("listening");
+    setResult(null);
+    setErrMsg("");
+    recog.onresult = (e) => {
+      const transcript = e.results[0][0].transcript;
+      const pct = textSimilarity(transcript, targetText);
+      setResult({ transcript, pct });
+      setState("done");
+    };
+    recog.onerror = (e) => {
+      setState("error");
+      setErrMsg(e.error === "not-allowed" ? "ไม่ได้รับอนุญาตใช้ไมโครโฟน กรุณาอนุญาตแล้วลองใหม่" : "ถอดเสียงไม่สำเร็จ ลองใหม่อีกครั้ง");
+    };
+    recog.onend = () => setState((s) => (s === "listening" ? "idle" : s));
+    try {
+      recog.start();
+    } catch (e) {
+      setState("error");
+      setErrMsg("เริ่มอัดเสียงไม่ได้");
+    }
+  };
+
+  if (!supported) {
+    return (
+      <div className="mt-2 flex flex-col items-center">
+        <button disabled style={thaiFont} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-teal-900/40 text-amber-100/30 cursor-not-allowed">
+          <Mic size={12} /> ฝึกพูด（เบราว์เซอร์นี้ไม่รองรับ）
+        </button>
+        <p style={thaiFont} className="text-[10px] text-amber-100/30 mt-1">ต้องใช้ Chrome หรือ Edge บนคอมพิวเตอร์เท่านั้น</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-2 flex flex-col items-center">
+      <button
+        onClick={start}
+        disabled={state === "listening"}
+        className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-rose-600 text-white disabled:opacity-60 active:scale-95 transition"
+      >
+        <Mic size={12} /> {state === "listening" ? "กำลังฟัง…" : "ฝึกพูด"}
+      </button>
+      {state === "error" && <p style={thaiFont} className="text-[11px] text-rose-300 mt-1 text-center max-w-[220px]">{errMsg}</p>}
+      {result && (
+        <p style={thaiFont} className={`text-xs mt-1.5 font-medium text-center ${speechTier(result.pct).color}`}>
+          คุณพูดว่า「{result.transcript || "（ไม่ได้ยิน）"}」・ใกล้เคียง {result.pct}%・{speechTier(result.pct).label}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------- */
 /* 字卡（旅遊／聊天短語）                                        */
 /* ---------------------------------------------------------- */
 
@@ -309,6 +433,7 @@ function TagCard({ item, known, onToggleKnown }) {
       </div>
       <p style={monoFont} className="text-xs text-emerald-800 mt-1.5 tracking-tight">{item.py}</p>
       <p style={thaiFont} className="text-sm text-teal-950/70 mt-1">{item.th}</p>
+      <SpeechPracticeButton targetText={item.zh} />
     </div>
   );
 }
@@ -779,14 +904,20 @@ function QuizSection({ known, onToggleKnown }) {
 /* 課程闖關                                                     */
 /* ---------------------------------------------------------- */
 
-const EASY_CHARS = CHARACTERS.filter((c) => c.group === "easy");
-const MEDIUM_CHARS = CHARACTERS.filter((c) => c.group === "medium");
-const HARD_CHARS = CHARACTERS.filter((c) => c.group === "hard");
+const CLASS_NAME_TH = { easy: "ง่าย", medium: "กลาง", hard: "ยาก" };
+
+const CHAR_LESSONS = CHARACTERS.map((c) => ({
+  id: `l-${c.c}`,
+  topic: "char",
+  domain: "char",
+  deep: true,
+  unit: c.c,
+  sub: `${c.py} · ${CLASS_NAME_TH[c.group]}`,
+  pool: [c],
+}));
 
 const LESSONS = [
-  { id: "l-easy", topic: "char", domain: "char", unit: "ตัวอักษร · ง่าย", sub: "12 ตัว ขีดน้อย", pool: EASY_CHARS },
-  { id: "l-medium", topic: "char", domain: "char", unit: "ตัวอักษร · กลาง", sub: "9 ตัว", pool: MEDIUM_CHARS },
-  { id: "l-hard", topic: "char", domain: "char", unit: "ตัวอักษร · ยาก", sub: "3 ตัว ขีดเยอะ", pool: HARD_CHARS },
+  ...CHAR_LESSONS,
   { id: "l-travel1", topic: "travel", domain: "phrase", unit: "ท่องเที่ยว (1/3)", sub: "ทักทาย ต่อรองราคา", pool: TRAVEL.slice(0, 8) },
   { id: "l-travel2", topic: "travel", domain: "phrase", unit: "ท่องเที่ยว (2/3)", sub: "อาหาร ถามทาง", pool: TRAVEL.slice(8, 16) },
   { id: "l-travel3", topic: "travel", domain: "phrase", unit: "ท่องเที่ยว (3/3)", sub: "ทานที่นี่/ห่อกลับ จ่ายเงิน", pool: TRAVEL.slice(16, 24) },
@@ -810,10 +941,14 @@ function kindsForLesson(lesson, direction) {
   return ["p_meaning", "p_listen", "p_reverse", "p_spell"];
 }
 
-function buildQuestion(lesson, item, index, direction = "mixed") {
-  const kinds = kindsForLesson(lesson, direction);
-  const kind = kinds[index % kinds.length];
+/* 單一漢字的「深入練習」關卡：固定 4 種角度，含例句，不受方向切換影響 */
+const DEEP_CHAR_KINDS = ["c_meaning", "c_listen", "c_sentence", "c_reverse"];
+function buildDeepQuestions(lesson) {
+  const item = lesson.pool[0];
+  return DEEP_CHAR_KINDS.map((kind) => buildQuestionForKind(lesson, item, kind));
+}
 
+function buildQuestionForKind(lesson, item, kind) {
   if (lesson.domain === "char") {
     const distractors = pickDistractors(CHARACTERS, item, 3);
     if (kind === "c_meaning") {
@@ -823,6 +958,12 @@ function buildQuestion(lesson, item, index, direction = "mixed") {
     if (kind === "c_listen") {
       const opts = shuffle([item, ...distractors]).map((c) => ({ key: c.c, label: c.c, big: true }));
       return { kind, item, prompt: { audio: item.c }, options: opts, correctKey: item.c };
+    }
+    if (kind === "c_sentence") {
+      const others = CHARACTERS.filter((c) => c.c !== item.c && c.sent);
+      const sentDistractors = shuffle(others).slice(0, 3);
+      const opts = shuffle([item, ...sentDistractors]).map((c) => ({ key: c.c, label: c.sent.th }));
+      return { kind, item, prompt: { zh: item.sent.zh, py: item.sent.py }, options: opts, correctKey: item.c };
     }
     const opts = shuffle([item, ...distractors]).map((c) => ({ key: c.c, label: c.c, big: true }));
     return { kind, item, prompt: { text: item.th }, options: opts, correctKey: item.c };
@@ -845,9 +986,19 @@ function buildQuestion(lesson, item, index, direction = "mixed") {
   return { kind, item, prompt: { text: item.th, audio: item.zh }, tiles: shuffle(tokens), correctTiles: tokens };
 }
 
+/* 產生單一題目（分組關卡用：依 index 在題型清單裡輪流） */
+function buildQuestion(lesson, item, index, direction = "mixed") {
+  const kinds = kindsForLesson(lesson, direction);
+  const kind = kinds[index % kinds.length];
+  return buildQuestionForKind(lesson, item, kind);
+}
+
 function LessonGame({ lesson, direction, onExit, onComplete }) {
-  const order = useMemo(() => shuffle(lesson.pool), [lesson]);
-  const questions = useMemo(() => order.map((item, i) => buildQuestion(lesson, item, i, direction)), [order, lesson, direction]);
+  const questions = useMemo(() => {
+    if (lesson.deep) return buildDeepQuestions(lesson);
+    const order = shuffle(lesson.pool);
+    return order.map((item, i) => buildQuestion(lesson, item, i, direction));
+  }, [lesson, direction]);
 
   const [qIndex, setQIndex] = useState(0);
   const [hearts, setHearts] = useState(3);
@@ -871,6 +1022,12 @@ function LessonGame({ lesson, direction, onExit, onComplete }) {
   };
   const handleContinue = () => {
     if (hearts <= 0) { onComplete(false, mistakes); return; }
+    if (qIndex + 1 >= questions.length) { onComplete(true, mistakes); return; }
+    setQIndex((i) => i + 1); setSelected(null); setTiles([]); setAnswered(false); setIsCorrect(false);
+  };
+  /* ข้ามข้อนี้: ไม่เสียหัวใจ ไม่นับว่าตอบผิด สำหรับคนที่ไม่มีเสียงหรือฟังไม่ได้ */
+  const handleSkip = () => {
+    if (answered) return;
     if (qIndex + 1 >= questions.length) { onComplete(true, mistakes); return; }
     setQIndex((i) => i + 1); setSelected(null); setTiles([]); setAnswered(false); setIsCorrect(false);
   };
@@ -899,6 +1056,11 @@ function LessonGame({ lesson, direction, onExit, onComplete }) {
           <>
             <p style={thaiFont} className="text-xs text-teal-950/40 mb-3">ฟังเสียงแล้วเลือกคำตอบ</p>
             <button onClick={() => speak(q.prompt.audio)} className="p-5 rounded-full bg-teal-950 text-amber-300 active:scale-95 transition"><Volume2 size={28} /></button>
+            {!answered && (
+              <button onClick={handleSkip} style={thaiFont} className="mt-3 text-xs text-teal-950/40 underline underline-offset-2">
+                ฟังไม่ได้? ข้ามข้อนี้
+              </button>
+            )}
           </>
         )}
         {q.prompt.zh && (
@@ -906,6 +1068,8 @@ function LessonGame({ lesson, direction, onExit, onComplete }) {
             <p style={thaiFont} className="text-xs text-teal-950/40 mb-2">ประโยคนี้แปลว่าอะไร？</p>
             <p style={zhFont} className="text-2xl font-bold text-teal-950">{q.prompt.zh}</p>
             <p style={monoFont} className="text-sm text-emerald-800 mt-1">{q.prompt.py}</p>
+            <button onClick={() => speak(q.prompt.zh)} style={thaiFont} className="inline-flex items-center gap-1 text-xs text-teal-950/50 mt-2"><Volume2 size={12} /> เล่นเสียง</button>
+            <SpeechPracticeButton targetText={q.prompt.zh} />
           </>
         )}
         {q.prompt.text && q.kind !== "p_spell" && (
@@ -1135,7 +1299,7 @@ function ChineseFromThai() {
       </div>
 
       <div className="px-5 pb-8 pt-2 max-w-3xl mx-auto">
-        <p style={thaiFont} className="text-xs text-amber-100/30">กดรูปดาวเพื่อบันทึกคำที่จำได้แล้ว ระบบจะบันทึกให้อัตโนมัติ การเล่นเสียงขึ้นอยู่กับว่าอุปกรณ์ของคุณรองรับเสียงภาษาจีนหรือไม่ หากไม่มีเสียง สามารถดูพินอินแทนได้</p>
+        <p style={thaiFont} className="text-xs text-amber-100/30">กดรูปดาวเพื่อบันทึกคำที่จำได้แล้ว ระบบจะบันทึกให้อัตโนมัติ การเล่นเสียงขึ้นอยู่กับว่าอุปกรณ์ของคุณรองรับเสียงภาษาจีนหรือไม่ หากไม่มีเสียง สามารถดูพินอินแทนได้ หรือกด "ข้ามข้อนี้" ในโจทย์ฟังเสียงได้โดยไม่เสียหัวใจ ปุ่ม "ฝึกพูด" ต้องใช้ไมโครโฟนและอินเทอร์เน็ต รองรับดีที่สุดใน Chrome/Edge บนคอมพิวเตอร์ เบราว์เซอร์อื่นจะแสดงเป็นปุ่มปิดใช้งาน คะแนนเป็นเพียงการเทียบข้อความที่ถอดเสียงได้ ไม่ใช่คะแนนความแม่นยำในการออกเสียงจริง ๆ</p>
       </div>
     </div>
   );
